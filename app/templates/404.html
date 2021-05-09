@@ -30,21 +30,53 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			</div>
 		<div class="main">
 		<div class="error-content">
-			<div class="top-header span_top">
-				<div class="logo">
-					<a href="index.html"><img src="../../static/images/logo.png" alt="" width="30%" /></a>
-				</div>
-                <div class="login">
-					<a>Log in</a><span>|</span><a>Sign up</a>
-				</div>
-				<div class="search v-search">
-					<form>
-						<input type="text" value="Search.." onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search..';}"/>
-						<input type="submit" value="">
-					</form>
-				</div>
-				<div class="clearfix"></div>
-			</div>
+				<div class="header">
+                    <div class="top-header">
+                        <div class="logo">
+                            <a href="index.html"><img src="../../static/images/logo.png" alt="" /></a>
+
+                        </div>
+
+                        <div class="dropdown">
+                          <button class="dropbtn">Movies</button>
+                          <div class="dropdown-content">
+                            <a href="#">Popular</a>
+                            <a href="#">Top Rated</a>
+                            <a href="#">Now Playing</a>
+                          </div>
+                        </div>
+
+                        <div class="dropdown">
+                          <button class="dropbtn">People</button>
+                          <div class="dropdown-content">
+                            <a href="#">Popular People</a>
+                          </div>
+                        </div>
+
+                        <div class="dropdown">
+                          <button class="dropbtn">More</button>
+                          <div class="dropdown-content">
+                              <a href="#">Discussions</a>
+                              <a href="#">Leaderboard</a>
+                            <a href="#">Contact us</a>
+                          </div>
+                        </div>
+
+
+
+                        <div class="login">
+                            <a href="login.html">Log in</a><span>|</span><a href="register.html">Sign up</a>
+                        </div>
+                        <div class="search">
+                            <form>
+                                <input type="text" value="Search.." onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = 'Search..';}"/>
+                                <input type="submit" value="">
+                            </form>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+			    </div>
+
 			<div class="error-404 text-center">
 				<h2>Lost your way?</h2>
 				<p>Sorry, we can't find that page. You'll find lots to explore on the home page.</p>
@@ -58,7 +90,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			<p>Copyright &copy; 2021. Rodrick All rights reserved.</p>
 		</div>
 	</div>	
-	</div>
+
 	<div class="clearfix"></div>
 	</div>
 </body>

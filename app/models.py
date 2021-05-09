@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 class Movie(models.Model):
@@ -18,10 +19,12 @@ class Movie(models.Model):
 class User(models.Model):
     username = models.CharField(max_length=30, unique=True)
     user_age = models.IntegerField()
-    gender = models.CharField(max_length=10)
+    gender = models.CharField(max_length=9)
     occupation = models.CharField(max_length=30, null=True)
     profile_pic = models.CharField(max_length=200, null=True)
     password = models.CharField(max_length=30, null=True)
+    email = models.CharField(max_length=100, unique=True, null=True)
+    register_time = models.DateTimeField(default=timezone.now)
 
 
 class Rating(models.Model):
