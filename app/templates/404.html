@@ -21,7 +21,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	<div class="full">
 			<div class="menu">
 				<ul>
-					<li><a href="index.html"><div class="hm"><i class="home1"></i><i class="home2"></i></div></a></li>
+					<li><a href="{% url 'index' %}"><div class="hm"><i class="home1"></i><i class="home2"></i></div></a></li>
 					<li><a href="videos.html"><div class="video"><i class="videos"></i><i class="videos1"></i></div></a></li>
 					<li><a href="reviews.html"><div class="cat"><i class="watching"></i><i class="watching1"></i></div></a></li>
 					<li><a class="active" href="404.html"><div class="bk"><i class="booking"></i><i class="booking1"></i></div></a></li>
@@ -33,7 +33,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				<div class="header">
                     <div class="top-header">
                         <div class="logo">
-                            <a href="index.html"><img src="../../static/images/logo.png" alt="" /></a>
+                            <a href="{% url 'index' %}"><img src="../../static/images/logo.png" alt="" /></a>
 
                         </div>
 
@@ -65,7 +65,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 
                         <div class="login">
-                            <a href="login.html">Log in</a><span>|</span><a href="register.html">Sign up</a>
+                            <a href="{% url 'login' %}">Log in</a><span>|</span><a href="{% url 'register' %}">Sign up</a>
                         </div>
                         <div class="search">
                             <form>
