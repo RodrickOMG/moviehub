@@ -18,7 +18,7 @@ class Movie(models.Model):
 
 class User(models.Model):
     username = models.CharField(max_length=30, unique=True)
-    user_age = models.IntegerField()
+    age = models.IntegerField()
     gender = models.CharField(max_length=9)
     occupation = models.CharField(max_length=30, null=True)
     profile_pic = models.CharField(max_length=200, null=True)

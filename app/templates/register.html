@@ -22,10 +22,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			<div class="menu">
 				<ul>
 					<li><a class="active" href="{% url 'index' %}"><i class="home"></i></a></li>
-					<li><a href="videos.html"><div class="video"><i class="videos"></i><i class="videos1"></i></div></a></li>
+					<li><a href="{% url 'topmovies' %}"><div class="video"><i class="videos"></i><i class="videos1"></i></div></a></li>
 					<li><a href="reviews.html"><div class="cat"><i class="watching"></i><i class="watching1"></i></div></a></li>
 					<li><a href="{% url '404' %}"><div class="bk"><i class="booking"></i><i class="booking1"></i></div></a></li>
-					<li><a href="contact.html"><div class="cnt"><i class="contact"></i><i class="contact1"></i></div></a></li>
+					<li><a href="{% url 'contact' %}"><div class="cnt"><i class="contact"></i><i class="contact1"></i></div></a></li>
 				</ul>
 			</div>
 		<div class="main">
@@ -78,14 +78,36 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
           <div class="content">
               <h2>Sign up for an account</h2>
               <p>Signing up for an account is free and easy. Fill out the form below to get started. JavaScript is required to to continue.</p>
-              <p id="register">Username</p>
-              <input type="text" name="username">
+              <form action="{% url 'register' %}" method="post">
+                  {% csrf_token %}
+              <p id="register">Username(12 characters maximum)</p>
+              <input type="text" name="r_username">
+               <div style="color: red;display: inline;margin-left: 20px" name="message">
+                      {% if username_message %}
+                        {{ username_message }}
+                      {% endif %}
+                  </div>
               <p id="register">Password(4 characters minimum)</p>
-              <input type="password" name="password">
+              <input type="password" name="r_password">
+              <div style="color: red;display: inline;margin-left: 20px" name="message">
+                      {% if password_message %}
+                        {{ password_message }}
+                      {% endif %}
+                  </div>
               <p id="register">Password Confirm</p>
               <input type="password" name="password_confirm">
+              <div style="color: red;display: inline;margin-left: 20px" name="message">
+                      {% if password_confirm_message %}
+                        {{ password_confirm_message }}
+                      {% endif %}
+                  </div>
               <p id="register">Email</p>
               <input type="email" name="email">
+              <div style="color: red;display: inline;margin-left: 20px" name="message">
+                      {% if email_message %}
+                        {{ email_message }}
+                      {% endif %}
+                  </div>
               <p id="register">Gender</p>
               <select name="gender" style="margin-left: 2em;margin-bottom: 1em;width: 30%;padding: 3px 0">
                   <option selected="selected" disabled="disabled"  style='display: none' value=''></option>
@@ -132,6 +154,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
               <div class="register-button">
                    <button>Sign Up</button>
               </div>
+              </form>
 
 
           </div>

@@ -22,10 +22,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			<div class="menu">
 				<ul>
 					<li><a class="active" href="{% url 'index' %}"><i class="home"></i></a></li>
-					<li><a href="videos.html"><div class="video"><i class="videos"></i><i class="videos1"></i></div></a></li>
+					<li><a href="{% url 'topmovies' %}"><div class="video"><i class="videos"></i><i class="videos1"></i></div></a></li>
 					<li><a href="reviews.html"><div class="cat"><i class="watching"></i><i class="watching1"></i></div></a></li>
 					<li><a href="{% url '404' %}"><div class="bk"><i class="booking"></i><i class="booking1"></i></div></a></li>
-					<li><a href="contact.html"><div class="cnt"><i class="contact"></i><i class="contact1"></i></div></a></li>
+					<li><a href="{% url 'contact' %}"><div class="cnt"><i class="contact"></i><i class="contact1"></i></div></a></li>
 				</ul>
 			</div>
 		<div class="main">
@@ -62,10 +62,15 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 </div>
 
 
-
+                {%  if request.session.is_login %}
+                <div class="login">
+					<a href="#">{{request.session.username}}</a><span>|</span><a href="{% url 'logout' %}" style="color: orange">Logout</a>
+				</div>
+                {% else %}
 				<div class="login">
 					<a href="{% url 'login' %}">Log in</a><span>|</span><a href="{% url 'register' %}">Sign up</a>
 				</div>
+                {% endif %}
 				<div class="search">
 					<form>
 						<input type="text" value="Search.." onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = 'Search..';}"/>

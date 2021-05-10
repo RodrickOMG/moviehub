@@ -21,33 +21,69 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	<div class="full">
 			<div class="menu">
 				<ul>
-					<li><a href="index.html"><div class="hm"><i class="home1"></i><i class="home2"></i></div></a></li>
-					<li><a href="videos.html"><div class="video"><i class="videos"></i><i class="videos1"></i></div></a></li>
+					<li><a href="{% url 'index' %}"><div class="hm"><i class="home1"></i><i class="home2"></i></div></a></li>
+					<li><a href="{% url 'topmovies' %}"><div class="video"><i class="videos"></i><i class="videos1"></i></div></a></li>
 					<li><a href="reviews.html"><div class="cat"><i class="watching"></i><i class="watching1"></i></div></a></li>
-					<li><a href="404.html"><div class="bk"><i class="booking"></i><i class="booking1"></i></div></a></li>
-					<li><a class="active" href="contact.html"><div class="cnt"><i class="contact"></i><i class="contact1"></i></div></a></li>
+					<li><a href="{% url '404' %}"><div class="bk"><i class="booking"></i><i class="booking1"></i></div></a></li>
+					<li><a class="active" href="{% url 'contact' %}"><div class="cnt"><i class="contact"></i><i class="contact1"></i></div></a></li>
 				</ul>
 			</div>
 		<div class="main">
-		<div class="contact-content">
-			<div class="top-header span_top">
+				<div class="header">
+			<div class="top-header">
 				<div class="logo">
-					<a href="index.html"><img src="../../static/images/logo.png" alt="" width="30%" /></a>
+					<a href="{% url 'index' %}"><img src="../../static/images/logo.png" alt="" /></a>
+
 				</div>
+
+                <div class="dropdown">
+                  <button class="dropbtn">Movies</button>
+                  <div class="dropdown-content">
+                    <a href="#">Popular</a>
+                    <a href="#">Top Rated</a>
+                    <a href="#">Now Playing</a>
+                  </div>
+                </div>
+
+                <div class="dropdown">
+                  <button class="dropbtn">People</button>
+                  <div class="dropdown-content">
+                    <a href="#">Popular People</a>
+                  </div>
+                </div>
+
+                <div class="dropdown">
+                  <button class="dropbtn">More</button>
+                  <div class="dropdown-content">
+                      <a href="#">Discussions</a>
+                      <a href="#">Leaderboard</a>
+                    <a href="#">Contact us</a>
+                  </div>
+                </div>
+
+
+
+				{%  if request.session.is_login %}
                 <div class="login">
-					<a>Log in</a><span>|</span><a>Sign up</a>
+					<a href="#">{{request.session.username}}</a><span>|</span><a href="{% url 'logout' %}" style="color: orange">Logout</a>
 				</div>
-				<div class="search v-search">
+                {% else %}
+				<div class="login">
+					<a href="{% url 'login' %}">Log in</a><span>|</span><a href="{% url 'register' %}">Sign up</a>
+				</div>
+                {% endif %}
+				<div class="search">
 					<form>
-						<input type="text" value="Search.." onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search..';}"/>
+						<input type="text" value="Search.." onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = 'Search..';}"/>
 						<input type="submit" value="">
 					</form>
 				</div>
 				<div class="clearfix"></div>
 			</div>
+		</div>
 			<!---contact-->
 <div class="main-contact">
-		 <h3 class="head">CONTACT</h3>
+		 <h3 class="head" style="padding-left: 0">CONTACT</h3>
 		 <p>WE'RE ALWAYS HERE TO HELP YOU</p>
 		 <div class="contact-form">
 			 <form>
@@ -70,16 +106,20 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			</div>
 	 </div>
 </div>
-	<div class="footer">
+<div class="footer">
 		<h6>Disclaimer : </h6>
-		<p class="claim">This is a freebies and not an official website, I have no intention of disclose any movie, brand, news.My goal here is to train or excercise my skill and share this freebies.</p>
-		<a href="example@mail.com">example@mail.com</a>
+		<p class="claim">This is a free and unofficial website, I have no intention to disclose any movie, brand or news. My goal here is to improve my skills and finish my graduation project.</p>
+		<a href="20174210@cqu.edu.cn">20174210@cqu.edu.cn</a>
 		<div class="copyright">
-			<p>Copyright &copy; 2015.Company name All rights reserved.<a target="_blank" href="http://www.cssmoban.com/">&#x7F51;&#x9875;&#x6A21;&#x677F;</a> - More Templates <a href="http://www.cssmoban.com/" target="_blank" title="手机网站模板">手机网站模板</a> </p>
+			<p>Copyright &copy; 2021. Rodrick All rights reserved.</p>
 		</div>
-	</div>	
+	</div>
+	</div>
 	</div>
 	<div class="clearfix"></div>
-	</div>
+<style>
+.copyrights{text-indent:-9999px;height:0;line-height:0;font-size:0;overflow:hidden;}
+</style>
+<div class="copyrights" id="links20210126">
 </body>
 </html>

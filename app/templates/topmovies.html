@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Contact</title>
+<link href="../../static/css/bootstrap.css" rel='stylesheet' type='text/css' />
+<!-- Custom Theme files -->
+<link href="../../static/css/style.css" rel="stylesheet" type="text/css" media="all" />
+<!-- Custom Theme files -->
+<script src="../../static/js/jquery.min.js"></script>
+<!-- Custom Theme files -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Cinema Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template,
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!--webfont-->
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+</head>
+<body>
+	<!-- header-section-starts -->
+	<div class="full">
+			<div class="menu">
+				<ul>
+					<li><a href="{% url 'index' %}"><div class="hm"><i class="home1"></i><i class="home2"></i></div></a></li>
+					<li><a class="active" href="{%  url 'topmovies' %}"><div class="video"><i class="videos"></i><i class="videos1"></i></div></a></li>
+					<li><a href="reviews.html"><div class="cat"><i class="watching"></i><i class="watching1"></i></div></a></li>
+					<li><a href="{% url '404' %}"><div class="bk"><i class="booking"></i><i class="booking1"></i></div></a></li>
+					<li><a href="{% url 'contact' %}"><div class="cnt"><i class="contact"></i><i class="contact1"></i></div></a></li>
+				</ul>
+			</div>
+		<div class="main">
+				<div class="header">
+			<div class="top-header">
+				<div class="logo">
+					<a href="{% url 'index' %}"><img src="../../static/images/logo.png" alt="" /></a>
+
+				</div>
+
+                <div class="dropdown">
+                  <button class="dropbtn">Movies</button>
+                  <div class="dropdown-content">
+                    <a href="#">Popular</a>
+                    <a href="#">Top Rated</a>
+                    <a href="#">Now Playing</a>
+                  </div>
+                </div>
+
+                <div class="dropdown">
+                  <button class="dropbtn">People</button>
+                  <div class="dropdown-content">
+                    <a href="#">Popular People</a>
+                  </div>
+                </div>
+
+                <div class="dropdown">
+                  <button class="dropbtn">More</button>
+                  <div class="dropdown-content">
+                      <a href="#">Discussions</a>
+                      <a href="#">Leaderboard</a>
+                    <a href="#">Contact us</a>
+                  </div>
+                </div>
+
+
+
+				{%  if request.session.is_login %}
+                <div class="login">
+					<a href="#">{{request.session.username}}</a><span>|</span><a href="{% url 'logout' %}" style="color: orange">Logout</a>
+				</div>
+                {% else %}
+				<div class="login">
+					<a href="{% url 'login' %}">Log in</a><span>|</span><a href="{% url 'register' %}">Sign up</a>
+				</div>
+                {% endif %}
+				<div class="search">
+					<form>
+						<input type="text" value="Search.." onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = 'Search..';}"/>
+						<input type="submit" value="">
+					</form>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+			<!---movies-->
+
+        <div class="movies">
+            <h2>Top Rated Movies</h2>
+            <div class="movies-sort">
+                <dropdown class="movies">
+                  <input id="toggle1" type="checkbox" checked>
+                  <label for="toggle1" class="animate">Sort<i class="fa fa-list float-right"></i></label>
+                  <ul class="animate">
+                    <li class="animate">
+                        <p style="font-size: 14px; font-weight: lighter">Sort Results By</p>
+                        <select name="sort" style="margin-top: 10px; width: 100%; font-size: 13px;padding:5px;">
+                            <option value =1>Rating Descending</option>
+                            <option value =2>Rating Ascending</option>
+                            <option value =3>Popularity Descending</option>
+                            <option value =4>Popularity Ascending</option>
+                            <option value =5>Title(A-Z)</option>
+                            <option value =6>Title(Z-A)</option>
+                        </select>
+                    </li>
+                  </ul>
+                    <div class="search-button" style="float: top">
+                       <button type="submit">Search</button>
+                  </div>
+                </dropdown>
+
+            </div>
+            <div class="movies-list">
+                <div class="movie-list-single">
+                    <div class="overlay"></div>
+                      <img src="../../static/images/m1.jpg" alt="">
+                      <div class="image-details">
+                        <p>Image 6</p>
+                      </div>
+                </div>
+                <div class="movie-list-single">
+                    <div class="overlay"></div>
+                      <img src="../../static/images/m1.jpg" alt="">
+                      <div class="image-details">
+                        <p>Image 6</p>
+                      </div>
+                </div>
+                <div class="movie-list-single">
+                    <div class="overlay"></div>
+                      <img src="../../static/images/m1.jpg" alt="">
+                      <div class="image-details">
+                        <p>Image 6</p>
+                      </div>
+                </div>
+                <div class="movie-list-single">
+                    <div class="overlay"></div>
+                      <img src="../../static/images/m1.jpg" alt="">
+                      <div class="image-details">
+                        <p>Image 6</p>
+                      </div>
+                </div>
+        </div>
+
+
+	</div>
+        <div class="footer">
+		<h6>Disclaimer : </h6>
+		<p class="claim">This is a free and unofficial website, I have no intention to disclose any movie, brand or news. My goal here is to improve my skills and finish my graduation project.</p>
+		<a href="20174210@cqu.edu.cn">20174210@cqu.edu.cn</a>
+		<div class="copyright">
+			<p>Copyright &copy; 2021. Rodrick All rights reserved.</p>
+		</div>
+	</div>
+	</div>
+	<div class="clearfix"></div>
+<style>
+.copyrights{text-indent:-9999px;height:0;line-height:0;font-size:0;overflow:hidden;}
+</style>
+</body>
+</html>
