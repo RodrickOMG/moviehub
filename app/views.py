@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.template import loader
 from django.contrib.auth.hashers import make_password, check_password
 from . import models, utilities
+from django.core import paginator
 
 
 def index(request):
@@ -97,5 +98,38 @@ def contact(request):
     return render(request, 'contact.html')
 
 
-def topmovies(request):
-    return render(request, 'topmovies.html')
+def topmovies(request, index):
+    movie_list = models.Movie.objects.all()[0:250]
+    pag = paginator.Paginator(movie_list, 20)
+    print(index)
+    if index == '':
+        index = 1
+    page = pag.page(index)
+    context = {
+        'page': page,
+    }
+    return render(request, 'topmovies.html', context)
+
+
+def movie(request, movie_id):
+    print(movie_id)
+    single_movie = models.Movie.objects.filter(movie_id=movie_id).first()
+    movie_title = single_movie.movie_title
+    genres = single_movie.genres
+    summary = single_movie.summary
+    release_date = single_movie.release_date
+    stars = single_movie.stars
+    director = single_movie.director
+    time = single_movie.time
+    poster_url = single_movie.poster_url
+    context = {
+        'movie_title': movie_title,
+        'genres': genres,
+        'summary': summary,
+        'release_date': release_date,
+        'stars': stars,
+        'director': director,
+        'time': time,
+        'poster_url': poster_url,
+    }
+    return render(request, 'single.html', context)

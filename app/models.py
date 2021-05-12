@@ -4,7 +4,7 @@ from django.utils import timezone
 
 class Movie(models.Model):
     movie_title = models.CharField(max_length=150)
-    movie_id = models.CharField(max_length=30)
+    movie_id = models.CharField(max_length=30, unique=True)
     imdb_id = models.CharField(max_length=30, unique=True)
     genres = models.CharField(max_length=100)
     poster_url = models.CharField(max_length=200, null=True)
@@ -29,11 +29,13 @@ class User(models.Model):
 
 class Rating(models.Model):
     rating = models.IntegerField()
-    user = models.ForeignKey(User, related_name='rating_user', on_delete=models.CASCADE, default='')
-    movie = models.ForeignKey(Movie, related_name='rating_movie', on_delete=models.CASCADE, default='')
+    user_id = models.ForeignKey(User, related_name='rating_user', on_delete=models.CASCADE, default='')
+    movie_id = models.ForeignKey(Movie, to_field="movie_id", related_name='rating_movie', on_delete=models.CASCADE, default='')
+    timestamp = models.DateTimeField(default=timezone.now)
 
 
 class Tag(models.Model):
-    tag = models.CharField(max_length=30)
-    user = models.ForeignKey(User, related_name='tag_user', on_delete=models.CASCADE, default='')
-    movie = models.ForeignKey(Movie, related_name='tag_movie', on_delete=models.CASCADE, default='')
+    tag = models.CharField(max_length=100)
+    user_id = models.ForeignKey(User, related_name='tag_user', on_delete=models.CASCADE, default='')
+    movie_id = models.ForeignKey(Movie, to_field="movie_id", related_name='tag_movie', on_delete=models.CASCADE, default='')
+    timestamp = models.DateTimeField(default=timezone.now)

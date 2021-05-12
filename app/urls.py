@@ -2,6 +2,7 @@ from django.urls import path, re_path
 from django.contrib import admin
 from django.urls import path, include
 from . import views
+from django.conf.urls import url
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -15,5 +16,6 @@ urlpatterns = [
     path('logout/', views.logout, name='logout'),
     path('contact/', views.contact, name='contact'),
     re_path(r'contact.html', views.contact),
-    path('topmovies/', views.topmovies, name='topmovies'),
+    url(r'^topmovies/(\d*)$', views.topmovies),
+    url(r'^movie/(\d*)$', views.movie),
 ]

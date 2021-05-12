@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Single</title>
+<title>{{ movie_title }}</title>
 <link href="../../static/css/bootstrap.css" rel='stylesheet' type='text/css' />
 <!-- Custom Theme files -->
 <link href="../../static/css/style.css" rel="stylesheet" type="text/css" media="all" />
@@ -22,7 +22,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			<div class="menu">
 				<ul>
 					<li><a href="{% url 'index' %}"><div class="hm"><i class="home1"></i><i class="home2"></i></div></a></li>
-					<li><a href="topmovies.html"><div class="video"><i class="videos"></i><i class="videos1"></i></div></a></li>
+					<li><a href="/moviehub/topmovies/{{index}}"><div class="video"><i class="videos"></i><i class="videos1"></i></div></a></li>
 					<li><a class="active" href="reviews.html"><div class="cat"><i class="watching"></i><i class="watching1"></i></div></a></li>
 					<li><a href="404.html"><div class="bk"><i class="booking"></i><i class="booking1"></i></div></a></li>
 					<li><a href="contact.html"><div class="cnt"><i class="contact"></i><i class="contact1"></i></div></a></li>
@@ -82,13 +82,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			</div>
 		</div>
 
-            <div class="single-bg" style="background: url(//www.themoviedb.org/t/p/w1280/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg);">
+            <div class="single-bg" style="background: url(//www.themoviedb.org/t/p/w1280/{{poster_url}});">
                 <div class="single-poster">
-                    <img src="https://www.themoviedb.org/t/p/w1280/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg">
+                    <img src="{{'https://www.themoviedb.org/t/p/w1280/'}}{{poster_url}}">
                 </div>
                 <div class="single-info">
-                    <h1>Toy Story（1995）</h1>
-                    <p>Adventure|Animation|Children|Comedy|Fantasy · 1h 21min</p>
+                    <h1>{{movie_title}}（{{release_date}}）</h1>
+                    <p>{{genres}} · {{time}}</p>
                     <h4 style="font-weight: bold;display:inline;">User Score:&nbsp;&nbsp;&nbsp;</h4><h4 style="display:inline;">4.5&nbsp;</h4>
                     <h4 style="display: inline"> (1,345 Ratings) </h4>
                     <div class="single-button">
@@ -96,19 +96,19 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <input type="image" src="../../static/images/icons/edit-yellow.png" style="width: 50px;">
                     </div>
                     <h3>Overview</h3>
-                    <p>A cowboy doll is profoundly threatened and jealous when a new spaceman figure supplants him as top toy in a boy's room.</p>
+                    <p>{{summary}}</p>
                     <h3>Director</h3>
-                    <p>John Lasseter</p>
+                    <p>{{director}}</p>
                     <h3>Cast</h3>
-                    <p>Tom Hanks|Tim Allen|Don Rickles</p>
+                    <p>{{stars}}</p>
 
                 </div>
             </div>
 
-            <div class="content">
+            <div class="content2">
                  <div class="single-review">
                     <h1>Reviews</h1>
-                    <div class="single-rreview-content"></div>
+                    <div class="single-review-content"></div>
                 </div>
                 <div class="single-recommend">
                     <h1>Recommend</h1>

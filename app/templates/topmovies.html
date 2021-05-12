@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Contact</title>
+<title>Top Rated Movies</title>
 <link href="../../static/css/bootstrap.css" rel='stylesheet' type='text/css' />
 <!-- Custom Theme files -->
 <link href="../../static/css/style.css" rel="stylesheet" type="text/css" media="all" />
@@ -22,7 +22,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			<div class="menu">
 				<ul>
 					<li><a href="{% url 'index' %}"><div class="hm"><i class="home1"></i><i class="home2"></i></div></a></li>
-					<li><a class="active" href="{%  url 'topmovies' %}"><div class="video"><i class="videos"></i><i class="videos1"></i></div></a></li>
+					<li><a class="active" href="/moviehub/topmovies/{{index}}"><div class="video"><i class="videos"></i><i class="videos1"></i></div></a></li>
 					<li><a href="reviews.html"><div class="cat"><i class="watching"></i><i class="watching1"></i></div></a></li>
 					<li><a href="{% url '404' %}"><div class="bk"><i class="booking"></i><i class="booking1"></i></div></a></li>
 					<li><a href="{% url 'contact' %}"><div class="cnt"><i class="contact"></i><i class="contact1"></i></div></a></li>
@@ -109,34 +109,27 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
             </div>
             <div class="movies-list">
-                <div class="movie-list-single">
-                    <div class="overlay"></div>
-                      <img src="../../static/images/m1.jpg" alt="">
-                      <div class="image-details">
-                        <p>Image 6</p>
-                      </div>
-                </div>
-                <div class="movie-list-single">
-                    <div class="overlay"></div>
-                      <img src="../../static/images/m1.jpg" alt="">
-                      <div class="image-details">
-                        <p>Image 6</p>
-                      </div>
-                </div>
-                <div class="movie-list-single">
-                    <div class="overlay"></div>
-                      <img src="../../static/images/m1.jpg" alt="">
-                      <div class="image-details">
-                        <p>Image 6</p>
-                      </div>
-                </div>
-                <div class="movie-list-single">
-                    <div class="overlay"></div>
-                      <img src="../../static/images/m1.jpg" alt="">
-                      <div class="image-details">
-                        <p>Image 6</p>
-                      </div>
-                </div>
+                    {% for each in page %}
+                        <div class="movie-list-single">
+
+                            <div class="overlay"></div>
+                              <img src = "{{'https://www.themoviedb.org/t/p/w1280/'}}{{each.poster_url}}" alt="">
+                              <div class="image-details">
+                                  <a href="/moviehub/movie/{{ each.movie_id }}" style="color: white"><p>{{ each.movie_title }}</p></a>
+                              </div>
+                        </div>
+                    {% endfor %}
+            <hr>
+            <div class="page-icon">
+                {% for index in page.paginator.page_range %}
+                    {% if index == page.number %}
+                    <span class="page-current">{{ index }}</span>
+                    {% else %}
+                     <a href="/moviehub/topmovies/{{index}}">{{ index }}</a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
         </div>
 
 
