@@ -107,6 +107,7 @@ def topmovies(request, index):
     page = pag.page(index)
     context = {
         'page': page,
+        'selected': 1,
     }
     return render(request, 'topmovies.html', context)
 
@@ -119,6 +120,7 @@ def topmovies_ascend(request, index):
     page = pag.page(index)
     context = {
         'page': page,
+        'selected': 2,
     }
     return render(request, 'topmovies.html', context)
 
@@ -135,8 +137,8 @@ def movie(request, movie_id):
     poster_url = single_movie.poster_url
     rating = single_movie.rating
     rating_count = single_movie.rating_count
-    recommended_movies = re.get_movie_recommendation(movie_id)
-    utilities.get_recommended_movies_info(recommended_movies)
+    recommended_movies_df = re.get_movie_recommendation(movie_id)
+    recommended_movies = utilities.get_recommended_movies_info(recommended_movies_df)
     context = {
         'movie_title': movie_title,
         'genres': genres,
@@ -148,6 +150,7 @@ def movie(request, movie_id):
         'poster_url': poster_url,
         'rating': rating,
         'rating_count': rating_count,
+        'recommended_movies': recommended_movies,
     }
     return render(request, 'single.html', context)
 

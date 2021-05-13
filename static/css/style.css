@@ -1451,7 +1451,8 @@ font-weight: 700;
 .single-recommend-movie h4 {
 	width: 50%;
 	float: right;
-	margin-top: 30px;
+	margin-top: 40px;
+	font-size: 16px;
 }
 
 .single-recommend-movie img{
@@ -1543,7 +1544,7 @@ font-weight: 700;
 
 .movies dropdown label,.movies dropdown ul li {
 	display: block;
-	width: 200px;
+	width: 300px;
 	background: whitesmoke;
 	padding: 15px 20px;
 	font-size: 16px;
@@ -1609,7 +1610,7 @@ font-weight: 700;
 }
 .movies dropdown ul li:nth-child(2):hover {
   background: #0072B5;
-  color: white;
+  color: black;
 }
 .movies dropdown ul li:nth-child(2):hover .fa {
   color: white;
@@ -1648,7 +1649,7 @@ font-weight: 700;
 	display: block;
 	margin-bottom: 1em;
 	margin-top: 20px;
-	width: 200px;
+	width: 300px;
 	padding:8px;
 	background-color: #dfb636;
 	border-color: #dfb636;

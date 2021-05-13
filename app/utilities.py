@@ -1,6 +1,7 @@
 import re
 import pymysql
 import time
+from . import models
 
 
 def check_email(email):
@@ -35,8 +36,17 @@ def get_rating_user_count(movie_id):
 
 
 def get_recommended_movies_info(movie_df):
-    for item in movie_df:
-        print(item)
+    recommended_movies_json = []
+    for row in movie_df.itertuples():
+        movie_id = getattr(row, 'movieId')
+        distance = getattr(row, 'Distance')
+        movie = models.Movie.objects.filter(movie_id=movie_id).first()
+        movie_title = movie.movie_title
+        poster_url = movie.poster_url
+        json = {'movie_id': movie_id, 'movie_title': movie_title, 'poster_url': poster_url, 'distance': distance}
+        recommended_movies_json.append(json)
+    return recommended_movies_json
+
 
 
 if __name__ == '__main__':
