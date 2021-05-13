@@ -40,7 +40,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                   <button class="dropbtn">Movies</button>
                   <div class="dropdown-content">
                     <a href="#">Popular</a>
-                    <a href="#">Top Rated</a>
+                    <a href="/moviehub/topmoovies">Top Rated</a>
                     <a href="#">Now Playing</a>
                   </div>
                 </div>
@@ -89,8 +89,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <div class="single-info">
                     <h1>{{movie_title}}（{{release_date}}）</h1>
                     <p>{{genres}} · {{time}}</p>
-                    <h4 style="font-weight: bold;display:inline;">User Score:&nbsp;&nbsp;&nbsp;</h4><h4 style="display:inline;">4.5&nbsp;</h4>
-                    <h4 style="display: inline"> (1,345 Ratings) </h4>
+                    <h4 style="font-weight: bold;display:inline;">User Score:&nbsp;&nbsp;&nbsp;</h4><h4 style="display:inline;">{{ rating }}&nbsp;</h4>
+                    {% if rating_count > 1 %}
+                    <h4 style="display: inline"> ({{rating_count}} Ratings) </h4>
+                    {% else %}
+                     <h4 style="display: inline"> ({{rating_count}} Rating) </h4>
+                    {% endif %}
                     <div class="single-button">
                         <input type="image" src="../../static/images/icons/heart-yellow.png" style="width: 50px;"/>
                         <input type="image" src="../../static/images/icons/edit-yellow.png" style="width: 50px;">
@@ -105,14 +109,38 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 </div>
             </div>
 
-            <div class="content2">
+            <div class="content2" style="display: inline-block; width: 90%">
                  <div class="single-review">
                     <h1>Reviews</h1>
                     <div class="single-review-content"></div>
                 </div>
                 <div class="single-recommend">
-                    <h1>Recommend</h1>
-                    <div class="single-recommend-content"></div>
+                    <h1>Recommendations</h1>
+                    <div class="single-recommend-content">
+                         <div style="border: 1px  #000000; width: 90%; margin: 0 auto;">
+                            <div class="single-recommend-movie">
+                                <img src="../../static/images/m1.jpg" >
+                                <h4>Toy Story</h4>
+                            </div>
+                            <div class="single-recommend-movie">
+                                <img src="../../static/images/m1.jpg" >
+                                <h4>Toy Story</h4>
+                            </div>
+                             <div class="single-recommend-movie">
+                                <img src="../../static/images/m1.jpg" >
+                                <h4>Toy Story</h4>
+                            </div>
+                             <div class="single-recommend-movie">
+                                <img src="../../static/images/m1.jpg" >
+                                <h4>Toy Story</h4>
+                            </div>
+                             <div class="single-recommend-movie">
+                                <img src="../../static/images/m1.jpg" >
+                                <h4>Toy Story</h4>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
 

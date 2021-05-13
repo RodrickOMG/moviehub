@@ -25,5 +25,19 @@ def create_user(username, password, email, gender, age, occupation):
     db.close()
 
 
+def get_rating_user_count(movie_id):
+    db = pymysql.connect(host="localhost", user="root", password="123456", database="moviehub", charset="utf8")
+    cursor = db.cursor()
+    sql = 'SELECT * FROM app_rating where movie_id_id="%s";' % movie_id
+    cursor.execute(sql)
+    rating_results = cursor.fetchall()
+    return len(rating_results)
+
+
+def get_recommended_movies_info(movie_df):
+    for item in movie_df:
+        print(item)
+
+
 if __name__ == '__main__':
     print('utilities')

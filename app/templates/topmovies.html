@@ -40,7 +40,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                   <button class="dropbtn">Movies</button>
                   <div class="dropdown-content">
                     <a href="#">Popular</a>
-                    <a href="#">Top Rated</a>
+                    <a href="/moviehub/topmovies">Top Rated</a>
                     <a href="#">Now Playing</a>
                   </div>
                 </div>
@@ -85,7 +85,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
         <div class="movies">
             <h2>Top Rated Movies</h2>
+
             <div class="movies-sort">
+                <form action="{% url 'sort' %}" method="post">
+                {% csrf_token %}
                 <dropdown class="movies">
                   <input id="toggle1" type="checkbox" checked>
                   <label for="toggle1" class="animate">Sort<i class="fa fa-list float-right"></i></label>
@@ -97,8 +100,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <option value =2>Rating Ascending</option>
                             <option value =3>Popularity Descending</option>
                             <option value =4>Popularity Ascending</option>
-                            <option value =5>Title(A-Z)</option>
-                            <option value =6>Title(Z-A)</option>
                         </select>
                     </li>
                   </ul>
@@ -106,8 +107,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                        <button type="submit">Search</button>
                   </div>
                 </dropdown>
-
+                </form>
             </div>
+
             <div class="movies-list">
                     {% for each in page %}
                         <div class="movie-list-single">

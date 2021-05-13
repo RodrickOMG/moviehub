@@ -4,6 +4,7 @@ from django.template import loader
 from django.contrib.auth.hashers import make_password, check_password
 from . import models, utilities
 from django.core import paginator
+from . import recommendation as re
 
 
 def index(request):
@@ -99,9 +100,20 @@ def contact(request):
 
 
 def topmovies(request, index):
-    movie_list = models.Movie.objects.all()[0:250]
+    movie_list = models.Movie.objects.all().order_by('-rating').filter(rating_count__gt=20)[0:250]
     pag = paginator.Paginator(movie_list, 20)
-    print(index)
+    if index == '':
+        index = 1
+    page = pag.page(index)
+    context = {
+        'page': page,
+    }
+    return render(request, 'topmovies.html', context)
+
+
+def topmovies_ascend(request, index):
+    movie_list = models.Movie.objects.all().order_by('rating').filter(rating_count__gt=20)[0:250]
+    pag = paginator.Paginator(movie_list, 20)
     if index == '':
         index = 1
     page = pag.page(index)
@@ -112,7 +124,6 @@ def topmovies(request, index):
 
 
 def movie(request, movie_id):
-    print(movie_id)
     single_movie = models.Movie.objects.filter(movie_id=movie_id).first()
     movie_title = single_movie.movie_title
     genres = single_movie.genres
@@ -122,6 +133,10 @@ def movie(request, movie_id):
     director = single_movie.director
     time = single_movie.time
     poster_url = single_movie.poster_url
+    rating = single_movie.rating
+    rating_count = single_movie.rating_count
+    recommended_movies = re.get_movie_recommendation(movie_id)
+    utilities.get_recommended_movies_info(recommended_movies)
     context = {
         'movie_title': movie_title,
         'genres': genres,
@@ -131,5 +146,18 @@ def movie(request, movie_id):
         'director': director,
         'time': time,
         'poster_url': poster_url,
+        'rating': rating,
+        'rating_count': rating_count,
     }
     return render(request, 'single.html', context)
+
+
+def sort(request):
+    option = request.POST.get('sort')
+    print(option)
+    if option == '1':
+        return topmovies(request, 1)
+    elif option == '2':
+        return topmovies_ascend(request, 1)
+    else:
+        return index(request)

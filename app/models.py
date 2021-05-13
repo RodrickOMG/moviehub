@@ -13,7 +13,8 @@ class Movie(models.Model):
     stars = models.CharField(max_length=100, null=True)
     release_date = models.CharField(max_length=30, null=True)
     time = models.CharField(max_length=30, null=True)
-    rating = models.IntegerField(null=True)
+    rating = models.FloatField(null=True)
+    rating_count = models.IntegerField(null=True, default=0)
 
 
 class User(models.Model):
