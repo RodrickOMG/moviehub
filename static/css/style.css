@@ -1719,14 +1719,14 @@ font-weight: 700;
 }
 
 .image-details {
-  text-align: center;
-  color: white;
-  font-size: 16px;font-family: "Source Sans Pro", Arial, sans-serif;
-  z-index: 4;
-  position: absolute;
-  top: 100%;
-  opacity: 0;
-  transition: all ease-in-out 0.5s;
+	text-align: center;
+	color: white;
+	font-size: 16px;font-family: "Source Sans Pro", Arial, sans-serif;
+	z-index: 4;
+	position: absolute;
+	top: 100%;
+	opacity: 0;
+	transition: all ease-in-out 0.5s;
 }
 
 .movie-list-single:hover .image-details {

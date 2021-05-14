@@ -48,6 +48,12 @@ def get_recommended_movies_info(movie_df):
     return recommended_movies_json
 
 
+def get_genres_type(genres_option):
+    if genres_option == '1':
+        return ''
+    else:
+        return genres_option
+
 
 if __name__ == '__main__':
     print('utilities')

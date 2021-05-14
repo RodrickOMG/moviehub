@@ -99,28 +99,40 @@ def contact(request):
     return render(request, 'contact.html')
 
 
-def topmovies(request, index):
-    movie_list = models.Movie.objects.all().order_by('-rating').filter(rating_count__gt=20)[0:250]
+def topmovies(request):
+    index = request.GET.get('index')
+    sort_option = request.GET.get('sort')
+    genres_option = request.GET.get('genres')
+    print(index, sort_option, genres_option)
+    if index is None:
+        index = 1
+    if sort_option is None:
+        sort_option = '1'
+    if genres_option is None:
+        genres_option = '1'
+    genres = utilities.get_genres_type(genres_option)
+    if sort_option == '1':
+        movie_list = models.Movie.objects.all().order_by('-rating').filter(rating_count__gt=20, genres__contains=genres)
+    elif sort_option == '2':
+        movie_list = models.Movie.objects.all().order_by('rating').filter(rating_count__gt=20, genres__contains=genres)
+    elif sort_option == '3':
+        movie_list = models.Movie.objects.all().order_by('-popularity').filter(rating_count__gt=20, genres__contains=genres)
+    elif sort_option == '4':
+        movie_list = models.Movie.objects.all().order_by('popularity').filter(rating_count__gt=20, genres__contains=genres)
+    else:
+        movie_list = models.Movie.objects.all().order_by('-rating').filter(rating_count__gt=20, genres__contains=genres)
+    if len(movie_list) >= 250:
+        movie_list = movie_list[0:250]
+    else:
+        movie_list = movie_list[0:len(movie_list)]
     pag = paginator.Paginator(movie_list, 20)
     if index == '':
         index = 1
     page = pag.page(index)
     context = {
         'page': page,
-        'selected': 1,
-    }
-    return render(request, 'topmovies.html', context)
-
-
-def topmovies_ascend(request, index):
-    movie_list = models.Movie.objects.all().order_by('rating').filter(rating_count__gt=20)[0:250]
-    pag = paginator.Paginator(movie_list, 20)
-    if index == '':
-        index = 1
-    page = pag.page(index)
-    context = {
-        'page': page,
-        'selected': 2,
+        'sort_selected': sort_option,
+        'genres_selected': genres_option,
     }
     return render(request, 'topmovies.html', context)
 
@@ -153,14 +165,3 @@ def movie(request, movie_id):
         'recommended_movies': recommended_movies,
     }
     return render(request, 'single.html', context)
-
-
-def sort(request):
-    option = request.POST.get('sort')
-    print(option)
-    if option == '1':
-        return topmovies(request, 1)
-    elif option == '2':
-        return topmovies_ascend(request, 1)
-    else:
-        return index(request)
