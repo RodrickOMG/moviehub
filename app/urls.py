@@ -18,4 +18,5 @@ urlpatterns = [
     re_path(r'contact.html', views.contact),
     url(r'^topmovies/$', views.topmovies),
     url(r'^movie/(\d*)$', views.movie),
+    path('profile/', views.profile, name='profile'),
 ]

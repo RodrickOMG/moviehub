@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{{ username }} Profile</title>
+<link href="../../static/css/bootstrap.css" rel='stylesheet' type='text/css' />
+<!-- Custom Theme files -->
+<link href="../../static/css/style.css" rel="stylesheet" type="text/css" media="all" />
+<!-- Custom Theme files -->
+<script src="../../static/js/jquery.min.js"></script>
+<script src="../../static/js/jquery.classyloader.min.js"></script>
+<!-- Custom Theme files -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Cinema Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template,
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!--webfont-->
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+</head>
+<body>
+	<!-- header-section-starts -->
+	<div class="full">
+			<div class="menu">
+				<ul>
+					<li><a href="{% url 'index' %}"><div class="hm"><i class="home1"></i><i class="home2"></i></div></a></li>
+					<li><a href="/moviehub/topmovies/?&index={{index}}"><div class="video"><i class="videos"></i><i class="videos1"></i></div></a></li>
+					<li><a href="reviews.html"><div class="cat"><i class="watching"></i><i class="watching1"></i></div></a></li>
+					<li><a href="{% url '404' %}"><div class="bk"><i class="booking"></i><i class="booking1"></i></div></a></li>
+					<li><a class="active" href="{% url 'contact' %}"><div class="cnt"><i class="contact"></i><i class="contact1"></i></div></a></li>
+				</ul>
+			</div>
+		<div class="main">
+				<div class="header">
+			<div class="top-header">
+				<div class="logo">
+					<a href="{% url 'index' %}"><img src="../../static/images/logo.png" alt="" /></a>
+
+				</div>
+
+                <div class="dropdown">
+                  <button class="dropbtn">Movies</button>
+                  <div class="dropdown-content">
+                    <a href="/moviehub/topmovies/?sort=3">Popular</a>
+                    <a href="/moviehub/topmovies">Top Rated</a>
+                    <a href="#">Now Playing</a>
+                  </div>
+                </div>
+
+                <div class="dropdown">
+                  <button class="dropbtn">People</button>
+                  <div class="dropdown-content">
+                    <a href="#">Popular People</a>
+                  </div>
+                </div>
+
+                <div class="dropdown">
+                  <button class="dropbtn">More</button>
+                  <div class="dropdown-content">
+                      <a href="#">Discussions</a>
+                      <a href="#">Leaderboard</a>
+                    <a href="#">Contact us</a>
+                  </div>
+                </div>
+
+
+
+				{%  if request.session.is_login %}
+                <div class="login">
+					<a href="#">{{request.session.username}}</a><span>&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="{% url 'logout' %}" style="color: orange">Logout</a>
+				</div>
+                {% else %}
+				<div class="login">
+					<a href="{% url 'login' %}">Log in</a><span>&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="{% url 'register' %}">Sign up</a>
+				</div>
+                {% endif %}
+				<div class="search">
+					<form>
+						<input type="text" value="Search.." onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = 'Search..';}"/>
+						<input type="submit" value="">
+					</form>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+			<!---profile-->
+        <div class="main-profile">
+            <div class="profile-header">
+                <h3 class="head" style="padding-left: 25%">{{username}}</h3>
+                <div class="profile-header-info">
+                    <div class="profile-header-image">
+                        <img src="../../static/images/user/default/man-1.png">
+                    </div>
+                    <div class="profile-header-average-score">
+                        <h4 style="font-weight: bold">Average Movie Score</h4>
+                        <canvas class="loader" style="margin-top: -20px; margin-left: -10px"></canvas>
+                    </div>
+                    <div class="profile-header-stats">
+                        <h4 style="font-weight: bold">Total Ratings</h4>
+                        <h2 style="font-weight: bold; line-height: 150px; color: dodgerblue">{{rating_count}}</h2>
+                    </div>
+                    <img src="../../static/images/png/settings.png" width="48px" style="position: absolute; top: 120px; right: 20px">
+                </div>
+                <script>
+                $(document).ready(function() {
+                    $('.loader').ClassyLoader({
+                        speed: 20,
+                        diameter: 50,
+                        fontSize: '26px',
+                        fontFamily: 'Open Sans',
+                    {% if avg_score <= 2 %}
+                        lineColor: 'rgba(201,57,97,1)',
+                    {% elif avg_score > 2 and avg_score <= 3.5%}
+                        lineColor: 'rgba(212,212,83,1)',
+                    {% else %}
+                        lineColor: 'rgba(96,197,126,1)',
+                    {% endif %}
+                        fontColor: 'rgba(0,0,0,0.8)',
+                        percentage: ({{avg_score}} / 5) * 100,
+                        remainingLineColor: 'rgba(0,0,0,0.1)',
+                        lineWidth: 16,
+                    });
+                });
+            </script>
+            </div>
+            <div class="profile-favorite">
+                <h2>My Favorite</h2>
+            </div>
+            <div class="profile-recent-ratings">
+                <h2>Recent Ratings</h2>
+            </div>
+            <div class="profile-browsing-history">
+                <h2>Browsing History</h2>
+            </div>
+            <div class="profile-recommend">
+                <h2>Recommendations For You</h2>
+            </div>
+        </div>
+<div class="footer">
+		<h6>Disclaimer : </h6>
+		<p class="claim">This is a free and unofficial website, I have no intention to disclose any movie, brand or news. My goal here is to improve my skills and finish my graduation project.</p>
+		<a href="20174210@cqu.edu.cn">20174210@cqu.edu.cn</a>
+		<div class="copyright">
+			<p>Copyright &copy; 2021. Rodrick All rights reserved.</p>
+		</div>
+	</div>
+	</div>
+	</div>
+	<div class="clearfix"></div>
+<style>
+.copyrights{text-indent:-9999px;height:0;line-height:0;font-size:0;overflow:hidden;}
+</style>
+<div class="copyrights" id="links20210126">
+</body>
+</html>

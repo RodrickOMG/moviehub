@@ -4,6 +4,7 @@ from django.template import loader
 from django.contrib.auth.hashers import make_password, check_password
 from . import models, utilities
 from django.core import paginator
+from django.db.models import Sum
 from . import recommendation as re
 
 
@@ -165,3 +166,24 @@ def movie(request, movie_id):
         'recommended_movies': recommended_movies,
     }
     return render(request, 'single.html', context)
+
+
+def profile(request):
+    try:
+        if not request.session['is_login']:
+            return render(request, 'notlogin.html')
+        else:
+            user_id = request.session['user_id']
+            rating_count = models.Rating.objects.all().filter(user_id_id=user_id).count()
+            all_scores = models.Rating.objects.filter(user_id_id=user_id).aggregate(rating_score_sum=Sum('rating'))
+            rating_score_sum = all_scores['rating_score_sum']
+            print(rating_score_sum)
+            avg_score = round(rating_score_sum / rating_count, 2)
+            context = {
+                'username': request.session['username'],
+                'rating_count': rating_count,
+                'avg_score': avg_score,
+            }
+            return render(request, 'profile.html', context)
+    except:
+        return render(request, 'notlogin.html')
