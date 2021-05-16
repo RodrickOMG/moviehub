@@ -55,5 +55,28 @@ def get_genres_type(genres_option):
         return genres_option
 
 
+def like_movie(user_id, movie_id):
+    like_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+    db = pymysql.connect(host="localhost", user="root", password="123456", database="moviehub", charset="utf8")
+    cursor = db.cursor()
+    sql = "INSERT INTO app_like (user_id_id, movie_id_id, timestamp) values" \
+          "  (%s,%s,%s);"
+    cursor.execute(sql,
+                   [user_id, movie_id, like_time])
+    db.commit()
+    cursor.close()
+    db.close()
+
+
+def dislike_movie(user_id, movie_id):
+    db = pymysql.connect(host="localhost", user="root", password="123456", database="moviehub", charset="utf8")
+    cursor = db.cursor()
+    sql = "DELETE FROM app_like WHERE movie_id_id=%s and user_id_id=%s;" % (movie_id, user_id)
+    cursor.execute(sql)
+    db.commit()
+    cursor.close()
+    db.close()
+
+
 if __name__ == '__main__':
     print('utilities')

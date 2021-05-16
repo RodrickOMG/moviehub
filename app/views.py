@@ -104,7 +104,6 @@ def topmovies(request):
     index = request.GET.get('index')
     sort_option = request.GET.get('sort')
     genres_option = request.GET.get('genres')
-    print(index, sort_option, genres_option)
     if index is None:
         index = 1
     if sort_option is None:
@@ -139,12 +138,27 @@ def topmovies(request):
 
 
 def movie(request, movie_id):
+    like_flag = False
+    try:
+        if not request.session['is_login']:
+            pass
+        else:
+            user_id = request.session['user_id']
+            like_model = models.Like.objects.all().filter(user_id_id=user_id, movie_id_id=movie_id).first()
+            if like_model:
+                like_flag = True
+            else:
+                pass
+    except:
+        pass
     single_movie = models.Movie.objects.filter(movie_id=movie_id).first()
     movie_title = single_movie.movie_title
-    genres = single_movie.genres
+    genres_original = single_movie.genres
+    genres = genres_original.replace("|", " | ")
     summary = single_movie.summary
     release_date = single_movie.release_date
-    stars = single_movie.stars
+    stars_original = single_movie.stars
+    stars = stars_original.replace("|", " | ")
     director = single_movie.director
     time = single_movie.time
     poster_url = single_movie.poster_url
@@ -153,6 +167,7 @@ def movie(request, movie_id):
     recommended_movies_df = re.get_movie_recommendation(movie_id)
     recommended_movies = utilities.get_recommended_movies_info(recommended_movies_df)
     context = {
+        'movie_id': movie_id,
         'movie_title': movie_title,
         'genres': genres,
         'summary': summary,
@@ -164,6 +179,7 @@ def movie(request, movie_id):
         'rating': rating,
         'rating_count': rating_count,
         'recommended_movies': recommended_movies,
+        'like': like_flag,
     }
     return render(request, 'single.html', context)
 
@@ -177,7 +193,6 @@ def profile(request):
             rating_count = models.Rating.objects.all().filter(user_id_id=user_id).count()
             all_scores = models.Rating.objects.filter(user_id_id=user_id).aggregate(rating_score_sum=Sum('rating'))
             rating_score_sum = all_scores['rating_score_sum']
-            print(rating_score_sum)
             avg_score = round(rating_score_sum / rating_count, 2)
             context = {
                 'username': request.session['username'],
@@ -187,3 +202,29 @@ def profile(request):
             return render(request, 'profile.html', context)
     except:
         return render(request, 'notlogin.html')
+
+
+def like(request):
+    try:
+        if not request.session['is_login']:
+            return render(request, 'notlogin.html')
+        else:
+            user_id = request.session['user_id']
+            movie_id = request.GET.get('movieId')
+            like_model = models.Like.objects.all().filter(user_id_id=user_id, movie_id_id=movie_id).first()
+            if not like_model:
+                utilities.like_movie(user_id, movie_id)
+            return movie(request, movie_id)
+    except:
+        return render(request, 'notlogin.html')
+    # print(request.GET.get('movieId'))
+    # return movie(request, request.GET.get('movieId'))
+
+
+def dislike(request):
+        user_id = request.session['user_id']
+        movie_id = request.GET.get('movieId')
+        like_model = models.Like.objects.all().filter(user_id_id=user_id, movie_id_id=movie_id).first()
+        if like_model:
+            utilities.dislike_movie(user_id, movie_id)
+        return movie(request, movie_id)

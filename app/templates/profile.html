@@ -66,7 +66,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 				{%  if request.session.is_login %}
                 <div class="login">
-					<a href="#">{{request.session.username}}</a><span>&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="{% url 'logout' %}" style="color: orange">Logout</a>
+					<a href={% url 'profile' %}>{{request.session.username}}</a><span>&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="{% url 'logout' %}" style="color: orange">Logout</a>
 				</div>
                 {% else %}
 				<div class="login">
@@ -98,7 +98,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <h4 style="font-weight: bold">Total Ratings</h4>
                         <h2 style="font-weight: bold; line-height: 150px; color: dodgerblue">{{rating_count}}</h2>
                     </div>
-                    <img src="../../static/images/png/settings.png" width="48px" style="position: absolute; top: 120px; right: 20px">
+                    <img src="../../static/images/icons/settings.png" width="48px" style="position: absolute; top: 120px; right: 20px">
                 </div>
                 <script>
                 $(document).ready(function() {
@@ -124,6 +124,50 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             </div>
             <div class="profile-favorite">
                 <h2>My Favorite</h2>
+                <div class="profile-favorite-content" >
+                    <div class="favorite-list-single">
+                              <img src = "../../static/images/r1.jpg" alt="">
+                        </div>
+                    <div class="favorite-list-single">
+                              <img src = "../../static/images/r1.jpg" alt="">
+                        </div>
+                    <div class="favorite-list-single">
+                              <img src = "../../static/images/r1.jpg" alt="">
+                        </div>
+                    <div class="favorite-list-single">
+                              <img src = "../../static/images/r1.jpg" alt="">
+                        </div>
+                    <div class="favorite-list-single">
+                              <img src = "../../static/images/r1.jpg" alt="">
+                        </div>
+                    <div class="favorite-list-single">
+                              <img src = "../../static/images/r1.jpg" alt="">
+                        </div>
+                    <div class="favorite-list-single">
+                              <img src = "../../static/images/r1.jpg" alt="">
+                        </div>
+                    <div class="favorite-list-single">
+                              <img src = "../../static/images/r1.jpg" alt="">
+                        </div>
+                    <div class="favorite-list-single">
+                              <img src = "../../static/images/r1.jpg" alt="">
+                        </div>
+                    <div class="favorite-list-single">
+                              <img src = "../../static/images/r1.jpg" alt="">
+                        </div>
+                    <div class="favorite-list-single">
+                              <img src = "../../static/images/r1.jpg" alt="">
+                        </div>
+                    <div class="favorite-list-single">
+                              <img src = "../../static/images/r1.jpg" alt="">
+                        </div>
+                    <div class="favorite-list-single">
+                              <img src = "../../static/images/r1.jpg" alt="">
+                        </div>
+                    <h3 style="white-space: nowrap">View More</h3>
+
+
+                </div>
             </div>
             <div class="profile-recent-ratings">
                 <h2>Recent Ratings</h2>

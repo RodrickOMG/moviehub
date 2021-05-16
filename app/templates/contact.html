@@ -65,7 +65,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 				{%  if request.session.is_login %}
                 <div class="login">
-					<a href="#">{{request.session.username}}</a><span>&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="{% url 'logout' %}" style="color: orange">Logout</a>
+					<a href={% url 'profile' %}>{{request.session.username}}</a><span>&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="{% url 'logout' %}" style="color: orange">Logout</a>
 				</div>
                 {% else %}
 				<div class="login">

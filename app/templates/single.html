@@ -65,7 +65,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 				{%  if request.session.is_login %}
                 <div class="login">
-					<a href="#">{{request.session.username}}</a><span>&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="{% url 'logout' %}" style="color: orange">Logout</a>
+					<a href={% url 'profile' %}>{{request.session.username}}</a><span>&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="{% url 'logout' %}" style="color: orange">Logout</a>
 				</div>
                 {% else %}
 				<div class="login">
@@ -96,8 +96,19 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                      <h4 style="display: inline"> ({{rating_count}} Rating) </h4>
                     {% endif %}
                     <div class="single-button">
-                        <input type="image" src="../../static/images/icons/heart-yellow.png" style="width: 50px;"/>
-                        <input type="image" src="../../static/images/icons/edit-yellow.png" style="width: 50px;">
+                        {% if not like %}
+                        <a href="/moviehub/like/?&movieId={{movie_id}}" style="padding-right: 20px">
+                            <img src="../../static/images/icons/heart-yellow.png" style="width: 50px;">
+                        </a>
+                        {% else %}
+                        <a href="/moviehub/dislike/?&movieId={{movie_id}}" style="padding-right: 20px">
+                            <img src="../../static/images/icons/heart-red.png" style="width: 50px;">
+                        </a>
+                        {% endif %}
+                        <a href="#">
+                            <img src="../../static/images/icons/edit-yellow.png" style="width: 50px;">
+                        </a>
+
                     </div>
                     <h3>Overview</h3>
                     <p>{{summary}}</p>
