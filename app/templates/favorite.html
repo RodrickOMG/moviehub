@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>{{ username }} Profile</title>
-<link rel="icon" href="../../static/images/logo-icon.png" type="image/x-icon"/>
+<title>Favorite</title>
 <link rel="icon" href="../../static/images/logo-icon.png" type="image/x-icon"/>
 <link href="../../static/css/bootstrap.css" rel='stylesheet' type='text/css' />
 <!-- Custom Theme files -->
@@ -117,7 +116,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         lineColor: 'rgba(96,197,126,1)',
                     {% endif %}
                         fontColor: 'rgba(0,0,0,0.8)',
-                        percentage: ( {{avg_score}} / 5) * 100 ,
+                        percentage: ({{avg_score}} / 5) * 100,
                         remainingLineColor: 'rgba(0,0,0,0.1)',
                         lineWidth: 16,
                     });
@@ -126,68 +125,22 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             </div>
             <div class="profile-favorite">
                 <h2>My Favorite</h2>
-                <div class="profile-favorite-content" >
+                <div class="favorite-content" >
                 {% if fav_movie_list %}
                     {% for fav_movie in fav_movie_list %}
-                    <div class="favorite-list-single">
+                    <div class="favorite-list-single-all">
+                    <a href="/moviehub/movie/{{ fav_movie.movie_id }}">
                             <img src = "{{'https://www.themoviedb.org/t/p/w1280/'}}{{fav_movie.poster_url}}" alt={{ fav_movie.movie_title }} width="200px">
-                        <a href="/moviehub/movie/{{ fav_movie.movie_id }}"><p>{{ fav_movie.movie_title }}</p></a>
-                        </div>
+                    </a>
+                    </div>
                     {% endfor %}
-                    {% if fav_movie_list.count > 20 %}
-                        <a href={% url 'favorite' %}><h3 style="white-space: nowrap;line-height: 300px;margin:0 20px;">View More</h3></a>
-                        <h3 style="white-space: nowrap;margin:0 20px;"> </h3>
-                    {% endif %}
                 {% else %}
-                    <img src="../../static/images/png/no-favorite.png" style="margin-left: 30px">
                 {% endif %}
-                </div>
-            </div>
-            <h2>Recent Ratings</h2>
-            {% if rating_movie_list %}
-            <div class="profile-recent-ratings">
-                {% for rating_movie in rating_movie_list %}
-                <div class="profile-recent-ratings-content">
-                    <div class="left-recent-rating">
-                        <h4>{{ rating_movie.movie_title }}</h4>
-                        <span>{{ rating_movie.rating_date}}</span>
-                    </div>
-                    <div class="right-recent-rating">
-                        {% if rating_movie.rating < 3 %}
-                            <h2 style="color: red">{{ rating_movie.rating }}</h2>
-                        {% elif rating_movie.rating == 3 %}
-                            <h2 style="color: yellow">{{ rating_movie.rating }}</h2>
-                        {% else %}
-                            <h2 style="color: green">{{ rating_movie.rating }}</h2>
-                        {% endif %}
-                    </div>
-                </div>
-               {% endfor %}
-            </div>
-            {% else %}
-                <div class="profile-recent-ratings" style="height: 300px">
-                 <img src="../../static/images/png/no-ratings.png" style="margin-left: 30px">
-                </div>
-            {% endif %}
 
-            <div class="profile-favorite">
-                <h2>Browsing History</h2>
-                <div class="profile-favorite-content" >
-                    {% if history_movie_list %}
-                        {% for history_movie in history_movie_list %}
-                        <div class="favorite-list-single">
-                                <img src = "{{'https://www.themoviedb.org/t/p/w1280/'}}{{history_movie.poster_url}}" alt={{ history_movie.movie_title }} width="200px">
-                            <a href="/moviehub/movie/{{ history_movie.movie_id }}"><p>{{ history_movie.movie_title }}</p></a>
-                            </div>
-                        {% endfor %}
-                    {% else %}
-                        <img src="../../static/images/png/no-history.png" style="margin-left: 30px">
-                    {% endif %}
-                </div>
-        <div class="profile-recommend">
-                <h2>Recommendations For You</h2>
-            </div>
 
+                </div>
+            </div>
+        </div>
 <div class="footer">
 		<h6>Disclaimer : </h6>
 		<p class="claim">This is a free and unofficial website, I have no intention to disclose any movie, brand or news. My goal here is to improve my skills and finish my graduation project.</p>

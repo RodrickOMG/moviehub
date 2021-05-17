@@ -53,3 +53,4 @@ class History(models.Model):
     user_id = models.ForeignKey(User, related_name='history_user', on_delete=models.CASCADE, default='')
     movie_id = models.ForeignKey(Movie, to_field="movie_id", related_name='history_movie', on_delete=models.CASCADE, default='')
     timestamp = models.DateTimeField(default=timezone.now)
+    count = models.IntegerField(default=1)

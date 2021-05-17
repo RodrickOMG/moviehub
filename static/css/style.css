@@ -1843,7 +1843,7 @@ page
 }
 
 .profile-header-image img {
-	width: 60%;
+	width: 128px;
 	margin-left: 2em;
 }
 
@@ -1863,20 +1863,112 @@ page
 
 .profile-favorite-content {
 	width:100%;
-	height: 300px;
+	height: 350px;
 	clear: both;
 	display: flex;
 	flex-wrap: nowrap;
 	justify-content: left;
-	margin: auto auto 50px;
+	margin-left: 10px;
 	overflow-x: scroll;
 }
 
 .favorite-list-single {
 	width: 20%;
+	height: 300px;
 	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	margin-left: 20px;
+	position: relative;
+}
+
+.favorite-list-single p {
+	font-size: 16px;
+	max-width: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	padding-top: 10px;
+}
+
+.favorite-list-single h3 {
+	line-height: 350px;
+	margin: 20px;
+}
+
+.favorite-content {
+	width:100%;
+	height: auto;
+	clear: both;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: left;
+	margin-left: 50px;
+}
+
+.favorite-list-single-all {
+	width: 20%;
+	height: 300px;
 	justify-content: center;
 	align-items: center;
 	margin: 20px;
 	position: relative;
+}
+
+.favorite-list-single-all img{
+	z-index: -1;
+	margin: auto;
+	transform: scale(1);
+	transition: all ease-in-out 0.5s;
+}
+
+
+.favorite-list-single-all:hover img {
+  transform: scale(1.1);
+}
+
+.profile-recent-ratings {
+	width:100%;
+	height: 130px;
+	clear: both;
+	display: flex;
+	flex-wrap: nowrap;
+	justify-content: left;
+	margin-left: 10px;
+	overflow-x: scroll;
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+
+.profile-recent-ratings-content {
+	margin-left: 2em;
+	height: 100px;
+	border: 2px none orangered;
+	border-top-style: solid;
+	padding:10px;
+	width: 20%;
+	display: flex;
+	position: relative;
+}
+
+.left-recent-rating {
+	width: 200px;
+	float: left;
+}
+
+.left-recent-rating h4{
+	max-width: 200px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.right-recent-rating {
+	width: 50px;
+	float: right;
+}
+
+.right-recent-rating h2 {
+	padding-top: 10px;
 }

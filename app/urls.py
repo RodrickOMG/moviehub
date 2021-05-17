@@ -21,4 +21,5 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     url(r'^like/$', views.like),
     url(r'^dislike/$', views.dislike),
+    path('favorite/', views.favorite, name='favorite'),
 ]
