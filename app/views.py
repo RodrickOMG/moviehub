@@ -196,6 +196,7 @@ def profile(request):
             fav_movie_list = utilities.get_fav_movie_list(user_id)
             rating_movie_list = utilities.get_rating_movie_list(user_id)
             history_movie_list = utilities.get_browsing_history_movie_list(user_id)
+            user = models.User.objects.all().filter(id=user_id).first()
             if len(fav_movie_list) >= 20:
                 fav_movie_list = fav_movie_list[0:20]
             if len(history_movie_list) >= 20:
@@ -208,7 +209,7 @@ def profile(request):
             else:
                 avg_score = 0
             context = {
-                'username': request.session['username'],
+                'user': user,
                 'rating_count': rating_count,
                 'avg_score': avg_score,
                 'fav_movie_list': fav_movie_list,
@@ -273,3 +274,121 @@ def favorite(request):
             return render(request, 'favorite.html', context)
     except:
         return render(request, 'notlogin.html')
+
+
+def settings(request):
+    try:
+        if not request.session['is_login']:
+            return render(request, 'notlogin.html')
+        else:
+            user_id = request.session['user_id']
+            user = models.User.objects.all().filter(id=user_id).first()
+            age_display = utilities.age_display(user.age)
+            occ_display = utilities.occupation_display(user.occupation)
+            gender_display = utilities.gender_display(user.gender)
+            profile_pictures = models.ProfilePicture.objects.all()
+            context = {
+                'user': user,
+                'age': age_display,
+                'occupation': occ_display,
+                'gender': gender_display,
+                'profile_pictures': profile_pictures,
+            }
+            return render(request, 'settings.html', context)
+    except:
+        return render(request, 'notlogin.html')
+
+
+def change_profile_pic(request):
+    try:
+        if not request.session['is_login']:
+            return render(request, 'notlogin.html')
+        else:
+            user_id = request.session['user_id']
+            new_profile_pic_path = request.POST.get('profile_picture_path')
+            utilities.change_profile_pic(user_id, new_profile_pic_path)
+            return redirect('/moviehub/profile/')
+    except:
+        return render(request, 'notlogin.html')
+
+
+def change_profile_info(request):
+        user_id = request.session['user_id']
+        username = request.POST.get('username')
+        original_username = request.session['username']
+        user = models.User.objects.all().filter(id=user_id).first()
+        age_display = utilities.age_display(user.age)
+        occ_display = utilities.occupation_display(user.occupation)
+        gender_display = utilities.gender_display(user.gender)
+        profile_pictures = models.ProfilePicture.objects.all()
+        context = {
+            'user': user,
+            'age': age_display,
+            'occupation': occ_display,
+            'gender': gender_display,
+            'profile_pictures': profile_pictures,
+            'username_message': '',
+            'email_message': '',
+            'successful_message': ''
+        }
+        if len(username) > 12:
+            context['username_message'] = 'Username should no longer than 12 characters'
+            return render(request, 'settings.html', context)
+        user = models.User.objects.filter(username=username).first()
+        if user and username != original_username:
+            context['username_message'] = 'Username already exists.'
+            return render(request, 'settings.html', context)
+        email = request.POST.get('email')
+        user = models.User.objects.filter(email=email).first()
+        original_email = models.User.objects.filter(id=user_id).first()
+        original_email = original_email.email
+        if user and email != original_email:
+            context['email_message'] = 'Email already exists.'
+            return render(request, 'settings.html', context)
+        gender = request.POST.get('gender')
+        age = request.POST.get('age')
+        occupation = request.POST.get('occupation')
+        utilities.change_profile_info(username, email, gender, age, occupation, user_id)
+        context['age'] = utilities.age_display(user.age)
+        context['occupation'] = utilities.occupation_display(user.occupation)
+        context['gender'] = utilities.gender_display(user.gender)
+        user = models.User.objects.filter(username=username).first()
+        context['user'] = user
+        request.session['username'] = user.username
+        context['successful_message'] = 'Successfully save profile information!'
+        return render(request, 'settings.html', context)
+
+
+def change_password(request):
+    user_id = request.session['user_id']
+    user = models.User.objects.all().filter(id=user_id).first()
+    age_display = utilities.age_display(user.age)
+    occ_display = utilities.occupation_display(user.occupation)
+    gender_display = utilities.gender_display(user.gender)
+    profile_pictures = models.ProfilePicture.objects.all()
+    context = {
+        'user': user,
+        'age': age_display,
+        'occupation': occ_display,
+        'gender': gender_display,
+        'profile_pictures': profile_pictures,
+        'password_message': '',
+        'email_message': '',
+        'password_confirm_message': ''
+    }
+    original_password = user.password
+    password = request.POST.get('password')
+    if len(password) < 4:
+        context['password_message'] = 'Password should more than 4 characters'
+        return render(request, 'settings.html', context)
+    if password == original_password:
+        context['password_message'] = 'Password should not be same as the original one'
+        return render(request, 'settings.html', context)
+    password_confirm = request.POST.get('password_confirm')
+    if password_confirm != password:
+        context['password_confirm_message'] = 'Password does not match.'
+        return render(request, 'settings.html', context)
+    utilities.change_password(user_id, password)
+    request.session.flush()
+    context = {'change_password_message': 'Successfully change password! Please login again!'}
+    return render(request, 'index.html', context)

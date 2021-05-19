@@ -1,10 +1,417 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<title>Settings</title>
+<link rel="icon" href="../../static/images/logo-icon.png" type="image/x-icon"/>
+<link href="../../static/css/bootstrap.css" rel='stylesheet' type='text/css' />
+<!-- Custom Theme files -->
+<link href="../../static/css/style.css" rel="stylesheet" type="text/css" media="all" />
+<!-- Custom Theme files -->
+<script src="../../static/js/jquery.min.js"></script>
+<script src="../../static/js/jquery.classyloader.min.js"></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- Custom Theme files -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Cinema Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template,
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!--webfont-->
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 </head>
+<script>
+    function back() {
+        window.history.back(-1);
+    }
+</script>
 <body>
+	<!-- header-section-starts -->
+	<div class="full">
+			<div class="menu">
+				<ul>
+					<li><a href="{% url 'index' %}"><div class="hm"><i class="home1"></i><i class="home2"></i></div></a></li>
+					<li><a href="/moviehub/topmovies/?&index={{index}}"><div class="video"><i class="videos"></i><i class="videos1"></i></div></a></li>
+					<li><a href="reviews.html"><div class="cat"><i class="watching"></i><i class="watching1"></i></div></a></li>
+					<li><a href="{% url '404' %}"><div class="bk"><i class="booking"></i><i class="booking1"></i></div></a></li>
+					<li><a class="active" href="{% url 'contact' %}"><div class="cnt"><i class="contact"></i><i class="contact1"></i></div></a></li>
+				</ul>
+			</div>
+		<div class="main">
+				<div class="header">
+			<div class="top-header">
+				<div class="logo">
+					<a href="{% url 'index' %}"><img src="../../static/images/logo.png" alt="" /></a>
 
+				</div>
+
+                <div class="dropdown">
+                  <button class="dropbtn">Movies</button>
+                  <div class="dropdown-content">
+                    <a href="/moviehub/topmovies/?sort=3">Popular</a>
+                    <a href="/moviehub/topmovies">Top Rated</a>
+                    <a href="#">Now Playing</a>
+                  </div>
+                </div>
+
+                <div class="dropdown">
+                  <button class="dropbtn">People</button>
+                  <div class="dropdown-content">
+                    <a href="#">Popular People</a>
+                  </div>
+                </div>
+
+                <div class="dropdown">
+                  <button class="dropbtn">More</button>
+                  <div class="dropdown-content">
+                      <a href="#">Discussions</a>
+                      <a href="#">Leaderboard</a>
+                    <a href="#">Contact us</a>
+                  </div>
+                </div>
+
+
+
+				{%  if request.session.is_login %}
+                <div class="login">
+					<a href={% url 'profile' %}>{{request.session.username}}</a><span>&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="{% url 'logout' %}" style="color: orange">Logout</a>
+				</div>
+                {% else %}
+				<div class="login">
+					<a href="{% url 'login' %}">Log in</a><span>&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="{% url 'register' %}">Sign up</a>
+				</div>
+                {% endif %}
+				<div class="search">
+					<form>
+						<input type="text" value="Search.." onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = 'Search..';}"/>
+						<input type="submit" value="">
+					</form>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+			<!---settings-->
+        <div class="content" style="width: 100%; display: inline-block">
+        <div>
+            <img src="../../static/images/icons/settings.png" style="width: 48px; display: inline; margin-left: 20px; margin-bottom: 20px"><h1 style="display: inline">Settings</h1>
+        </div>
+        <div class="settings-left" style="width: 40%;float: left">
+        <div class="profile-image">
+            <input data-toggle="modal" data-target="#myModal" type="image" src={{user.profile_pic}}>
+        </div>
+
+        <form action="{% url 'change-profile-info' %}" method="post">
+        {% csrf_token %}
+        <div class="settings-container">
+            <h3 style="margin-left: 10px">Username:&nbsp;</h3>
+            <input type="text" name="username" value={{ user.username }} placeholder={{ user.username }}>
+                      {% if username_message %}
+                          <script>
+                              alert( '{{ username_message }} ');
+                          </script>
+                      {% endif %}
+        </div>
+        <div class="settings-container">
+            <h3 style="margin-left: 10px">Email:&nbsp;</h3>
+            <input type="text" name="email" value={{ user.email }} placeholder={{ user.email }}>
+                      {% if email_message %}
+                          <script>
+                              alert( '{{ email_message }} ');
+                          </script>
+                      {% endif %}
+        </div>
+        <div class="settings-container">
+            <h3 style="margin-left: 10px">Gender:&nbsp;</h3>
+             <select name="gender">
+                {% if user.gender == 'M' %}
+                <option value ="M" selected="selected">Male</option>
+                {% else %}
+                <option value ="M" >Male</option>
+                {% endif %}
+                {% if user.gender == 'F' %}
+                <option value ="F" selected="selected">Female</option>
+                {% else %}
+                <option value ="F">Female</option>
+                {% endif %}
+                {% if user.gender == 'S' %}
+                <option value ="S" selected="selected">Secret</option>
+                {% else %}
+                <option value ="S">Secret</option>
+                {% endif %}
+                </select>
+        </div>
+        <div class="settings-container">
+            <h3 style="margin-left: 10px">Age:&nbsp;</h3>
+            <select name="age">
+                {% if user.age == '1' %}
+                <option value=1 selected="selected">Under 18</option>
+                {% else %}
+                <option value=1>Under 18</option>
+                {% endif %}
+                {% if user.age == '18' %}
+                <option value=18 selected="selected">18-24</option>
+                {% else %}
+                <option value=18>18-24</option>
+                {% endif %}
+                {% if user.age == '25' %}
+                <option value=25 selected="selected">25-34</option>
+                {% else %}
+                <option value=25>25-34</option>
+                {% endif %}
+                {% if user.age == '35' %}
+                <option value=35 selected="selected">35-44</option>
+                {% else %}
+                <option value=35>35-44</option>
+                {% endif %}
+                {% if user.age == '45' %}
+                <option value=45 selected="selected">45-49</option>
+                {% else %}
+                <option value=45>45-49</option>
+                {% endif %}
+                {% if user.age == '50' %}
+                <option value=50 selected="selected">50-55</option>
+                {% else %}
+                <option value=50>50-55</option>
+                {% endif %}
+                {% if user.age == '56' %}
+                <option value=56 selected="selected">56+</option>
+                {% else %}
+                <option value=56>56+</option>
+                {% endif %}
+                </select>
+        </div>
+        <div class="settings-container">
+            <h3 style="margin-left: 10px">Occupation:&nbsp;</h3>
+            <select name="occupation">
+                {% if user.occupation == '0' %}
+                    <option value=0 selected="selected">"other" or not specified</option>
+                {% else %}
+                    <option value=0>\"other\" or not specified</option>
+                {% endif %}
+                {% if user.occupation == '1' %}
+                    <option value=1 selected="selected">academic/educator</option>
+                {% else %}
+                    <option value=1>academic/educator</option>
+                {% endif %}
+                {% if user.occupation == '2' %}
+                    <option value=2 selected="selected">artist</option>
+                {% else %}
+                    <option value=2>artist</option>
+                {% endif %}
+                {% if user.occupation == '3' %}
+                    <option value=3 selected="selected">clerical/admin</option>
+                {% else %}
+                    <option value=3>clerical/admin</option>
+                {% endif %}
+                {% if user.occupation == '4' %}
+                    <option value=4 selected="selected">college/grad student</option>
+                {% else %}
+                    <option value=4>college/grad student</option>
+                {% endif %}
+                {% if user.occupation == '5' %}
+                    <option value=5 selected="selected">customer service</option>
+                {% else %}
+                    <option value=5>customer service</option>
+                {% endif %}
+                {% if user.occupation == '6' %}
+                    <option value=6 selected="selected">doctor/health care</option>
+                {% else %}
+                    <option value=6>doctor/health care</option>
+                {% endif %}
+                {% if user.occupation == '7' %}
+                    <option value=7 selected="selected">executive/managerial</option>
+                {% else %}
+                    <option value=7>executive/managerial</option>
+                {% endif %}
+                {% if user.occupation == '8' %}
+                    <option value=8 selected="selected">farmer</option>
+                {% else %}
+                    <option value=8>farmer</option>
+                {% endif %}
+                {% if user.occupation == '9' %}
+                    <option value=9 selected="selected">homemaker</option>
+                {% else %}
+                    <option value=9>homemaker</option>
+                {% endif %}
+                {% if user.occupation == '10' %}
+                    <option value=10 selected="selected">K-12 student</option>
+                {% else %}
+                    <option value=10>K-12 student</option>
+                {% endif %}
+                {% if user.occupation == '11' %}
+                    <option value=11 selected="selected">lawyer</option>
+                {% else %}
+                    <option value=11>lawyer</option>
+                {% endif %}
+                {% if user.occupation == '12' %}
+                    <option value=12 selected="selected">programmer</option>
+                {% else %}
+                    <option value=12>programmer</option>
+                {% endif %}
+                {% if user.occupation == '13' %}
+                    <option value=13 selected="selected">retired</option>
+                {% else %}
+                    <option value=13>retired</option>
+                {% endif %}
+                {% if user.occupation == '14' %}
+                    <option value=14 selected="selected">sales/marketing</option>
+                {% else %}
+                    <option value=14>sales/marketing</option>
+                {% endif %}
+                {% if user.occupation == '15' %}
+                    <option value=15 selected="selected">scientist</option>
+                {% else %}
+                    <option value=15>scientist</option>
+                {% endif %}
+                {% if user.occupation == '16' %}
+                    <option value=16 selected="selected">self-employed</option>
+                {% else %}
+                    <option value=16>self-employed</option>
+                {% endif %}
+                {% if user.occupation == '17' %}
+                    <option value=17 selected="selected">technician/engineer</option>
+                {% else %}
+                    <option value=17>technician/engineer</option>
+                {% endif %}
+                {% if user.occupation == '18' %}
+                    <option value=18 selected="selected">tradesman/craftsman</option>
+                {% else %}
+                    <option value=18>tradesman/craftsman</option>
+                {% endif %}
+                {% if user.occupation == '19' %}
+                    <option value=19 selected="selected">unemployed</option>
+                {% else %}
+                    <option value=19>unemployed</option>
+                {% endif %}
+                {% if user.occupation == '20' %}
+                    <option value=20 selected="selected">writer</option>
+                {% else %}
+                    <option value=20>writer</option>
+                {% endif %}
+                </select>
+        </div>
+        <button type="button" data-toggle="modal" data-target="#changePasswordModal" style="width: 80%; margin-left: 38px; background: red">Change Password</button>
+        <button type="submit" style="width: 35%; margin-left: 38px">Save</button>
+        <button type="button" style="width: 35%; margin-left: 38px; background: darkseagreen" onclick="back()">Cancel</button>
+        </form>
+
+              {% if successful_message %}
+                  <script>
+                      alert( '{{ successful_message }} ');
+                  </script>
+              {% endif %}
+
+        </div>
+                 <div class="settings-right" style="width: 60%; float: right">
+
+                 </div>
+
+
+
+
+          </div><!-- /content -->
+
+        <!-- 按钮触发模态框 -->
+        <!-- 模态框（Modal） -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="width: 700px">
+            <form action="{% url 'change-profile-pic' %}" method=post>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            Change Profile Picture
+                        </h4>
+                    </div>
+
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="choose-profile-picture">
+                            {% for profile_picture in profile_pictures %}
+                            <label><input type="radio" name="profile_picture_path" value={{ profile_picture.pic_path }}><img src={{ profile_picture.pic_path }}></label>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            Change
+                        </button>
+                    </div>
+                </div><!-- /.modal-content -->
+                </form>
+            </div><!-- /.modal -->
+        </div>
+
+
+        <!-- 按钮触发模态框 -->
+        <!-- 模态框（Modal） -->
+        <div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="width: 400px">
+            <form action="{% url 'change-password' %}" method=post>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            Change Password
+                        </h4>
+                    </div>
+
+                    {% csrf_token %}
+                    <div class="modal-body">
+                    <div class="change-password">
+                        <p id="register">Password(4 characters minimum)</p>
+                      <input type="password" name="password">
+                    <script>
+                              {% if password_message %}
+                                alert('{{ password_message }}');
+                              {% endif %}
+                    </script>
+
+                      <p id="register">Password Confirm</p>
+                      <input type="password" name="password_confirm">
+                            <script>
+                              {% if password_confirm_message %}
+                                alert('{{ password_confirm_message }}');
+                              {% endif %}
+                            </script>
+                    </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            Change
+                        </button>
+                    </div>
+                </div><!-- /.modal-content -->
+                </form>
+            </div><!-- /.modal -->
+        </div>
+
+
+<div class="footer">
+		<h6>Disclaimer : </h6>
+		<p class="claim">This is a free and unofficial website, I have no intention to disclose any movie, brand or news. My goal here is to improve my skills and finish my graduation project.</p>
+		<a href="20174210@cqu.edu.cn">20174210@cqu.edu.cn</a>
+		<div class="copyright">
+			<p>Copyright &copy; 2021. Rodrick All rights reserved.</p>
+		</div>
+	</div>
+	</div>
+	</div>
+	<div class="clearfix"></div>
+<style>
+.copyrights{text-indent:-9999px;height:0;line-height:0;font-size:0;overflow:hidden;}
+</style>
+<div class="copyrights" id="links20210126">
 </body>
 </html>

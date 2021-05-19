@@ -5,10 +5,13 @@ from . import models
 
 
 def check_email(email):
-    c = re.compile(r'^\w+@(\w+\.)+(com|cn|net)$')
-    s = c.search(email)
-    if s:
-        return True
+    if email is not None:
+        c = re.compile(r'^\w+@(\w+\.)+(com|cn|net)$')
+        s = c.search(email)
+        if s:
+            return True
+        else:
+            return False
     else:
         return False
 
@@ -129,6 +132,107 @@ def browser_history(user_id, movie_id):
     db.commit()
     cursor.close()
     db.close()
+
+
+def change_profile_pic(user_id, path):
+    db = pymysql.connect(host="localhost", user="root", password="123456", database="moviehub", charset="utf8")
+    cursor = db.cursor()
+    sql = 'UPDATE app_user set profile_pic=%s where id=%s;'
+    cursor.execute(sql, [path, user_id])
+    db.commit()
+    cursor.close()
+    db.close()
+
+
+def change_profile_info(username, email, gender, age, occupation, user_id):
+    db = pymysql.connect(host="localhost", user="root", password="123456", database="moviehub", charset="utf8")
+    cursor = db.cursor()
+    sql = 'UPDATE app_user set username=%s, email=%s, gender=%s, age=%s, occupation=%s where id=%s;'
+    cursor.execute(sql, [username, email, gender, age, occupation, user_id])
+    db.commit()
+    cursor.close()
+    db.close()
+
+
+def change_password(user_id, password):
+    db = pymysql.connect(host="localhost", user="root", password="123456", database="moviehub", charset="utf8")
+    cursor = db.cursor()
+    sql = 'UPDATE app_user set password=%s where id=%s;'
+    cursor.execute(sql, [password, user_id])
+    db.commit()
+    cursor.close()
+    db.close()
+
+
+def age_display(age):
+    if age == '1':
+        return 'Under 18'
+    elif age == '18':
+        return '18-24'
+    elif age == '25':
+        return '25-34'
+    elif age == '35':
+        return '35-44'
+    elif age == '45':
+        return '45-49'
+    elif age == '50':
+        return '50-55'
+    else:
+        return '56+'
+
+
+def occupation_display(occ):
+    if occ == '0':
+        return '"other" or not specified'
+    elif occ == '1':
+        return 'academic/educator'
+    elif occ == '2':
+        return 'artist'
+    elif occ == '3':
+        return 'clerical/admin'
+    elif occ == '4':
+        return 'college/grad student'
+    elif occ == '5':
+        return 'customer service'
+    elif occ == '6':
+        return 'doctor/health care'
+    elif occ == '7':
+        return 'executive/managerial'
+    elif occ == '8':
+        return 'farmer'
+    elif occ == '9':
+        return 'homemaker'
+    elif occ == '10':
+        return 'K-12 student'
+    elif occ == '11':
+        return 'lawyer'
+    elif occ == '12':
+        return 'programmer'
+    elif occ == '13':
+        return 'retired'
+    elif occ == '14':
+        return 'sales/marketing'
+    elif occ == '15':
+        return 'scientist'
+    elif occ == '16':
+        return 'self-employed'
+    elif occ == '17':
+        return 'technician/engineer'
+    elif occ == '18':
+        return 'tradesman/craftsman'
+    elif occ == '19':
+        return 'unemployed'
+    else:
+        return 'writer'
+
+
+def gender_display(gender):
+    if gender == 'M':
+        return 'Male'
+    elif gender == 'F':
+        return 'Female'
+    else:
+        return 'Secret'
 
 
 if __name__ == '__main__':

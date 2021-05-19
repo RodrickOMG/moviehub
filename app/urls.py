@@ -22,4 +22,8 @@ urlpatterns = [
     url(r'^like/$', views.like),
     url(r'^dislike/$', views.dislike),
     path('favorite/', views.favorite, name='favorite'),
+    path('settings/', views.settings, name='settings'),
+    path('change-profile-pic/', views.change_profile_pic, name='change-profile-pic'),
+    path('change-profile-info/', views.change_profile_info, name='change-profile-info'),
+    path('change-password/', views.change_password, name='change-password'),
 ]

@@ -201,7 +201,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			});
 		</script>
 		<script type="text/javascript" src="../../static/js/jquery.flexisel.js"></script>
-		</div>	
+		</div>
+
+          {% if change_password_message %}
+            <script>
+                alert('{{ change_password_message }}');
+            </script>
+          {% endif %}}
+
 	<div class="footer">
 		<h6>Disclaimer : </h6>
 		<p class="claim">This is a free and unofficial website, I have no intention to disclose any movie, brand or news. My goal here is to improve my skills and finish my graduation project.</p>

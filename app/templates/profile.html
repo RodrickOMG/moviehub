@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>{{ username }} Profile</title>
-<link rel="icon" href="../../static/images/logo-icon.png" type="image/x-icon"/>
+<title>{{ user.username }} Profile</title>
 <link rel="icon" href="../../static/images/logo-icon.png" type="image/x-icon"/>
 <link href="../../static/css/bootstrap.css" rel='stylesheet' type='text/css' />
 <!-- Custom Theme files -->
@@ -10,6 +9,7 @@
 <!-- Custom Theme files -->
 <script src="../../static/js/jquery.min.js"></script>
 <script src="../../static/js/jquery.classyloader.min.js"></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <!-- Custom Theme files -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -87,10 +87,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			<!---profile-->
         <div class="main-profile">
             <div class="profile-header">
-                <h3 class="head" style="padding-left: 25%">{{username}}</h3>
+                <h3 class="head" style="padding-left: 25%">{{user.username}}</h3>
                 <div class="profile-header-info">
                     <div class="profile-header-image">
-                        <img src="../../static/images/user/default/man-1.png">
+                        <img src={{user.profile_pic}}>
                     </div>
                     <div class="profile-header-average-score">
                         <h4 style="font-weight: bold">Average Movie Score</h4>
@@ -100,7 +100,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <h4 style="font-weight: bold">Total Ratings</h4>
                         <h2 style="font-weight: bold; line-height: 150px; color: dodgerblue">{{rating_count}}</h2>
                     </div>
-                    <img src="../../static/images/icons/settings.png" width="48px" style="position: absolute; top: 120px; right: 20px">
+                    <a href={% url 'settings' %}><img src="../../static/images/icons/settings.png" width="48px" style="position: absolute; top: 120px; right: 20px"></a>
                 </div>
                 <script>
                 $(document).ready(function() {
@@ -184,9 +184,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <img src="../../static/images/png/no-history.png" style="margin-left: 30px">
                     {% endif %}
                 </div>
-        <div class="profile-recommend">
-                <h2>Recommendations For You</h2>
+                <div class="profile-recommend">
+                    <h2>Recommendations For You</h2>
+                </div>
             </div>
+        </div>
 
 <div class="footer">
 		<h6>Disclaimer : </h6>

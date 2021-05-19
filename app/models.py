@@ -54,3 +54,7 @@ class History(models.Model):
     movie_id = models.ForeignKey(Movie, to_field="movie_id", related_name='history_movie', on_delete=models.CASCADE, default='')
     timestamp = models.DateTimeField(default=timezone.now)
     count = models.IntegerField(default=1)
+
+
+class ProfilePicture(models.Model):
+    pic_path = models.CharField(max_length=200, unique=True)
