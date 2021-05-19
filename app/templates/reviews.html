@@ -39,8 +39,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					<a>Log in</a><span>|</span><a>Sign up</a>
 				</div>
 				<div class="search v-search">
-					<form>
-						<input type="text" value="Search.." onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search..';}"/>
+										<form action="{% url 'search' %}" method="post">
+                        {% csrf_token %}
+						<input type="text" value="Search.." onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = 'Search..';}" name="search"/>
 						<input type="submit" value="">
 					</form>
 				</div>

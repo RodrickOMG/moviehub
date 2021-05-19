@@ -164,6 +164,16 @@ def change_password(user_id, password):
     db.close()
 
 
+def delete_browsing_history(user_id):
+    db = pymysql.connect(host="localhost", user="root", password="123456", database="moviehub", charset="utf8")
+    cursor = db.cursor()
+    sql = 'DELETE FROM app_history where user_id_id=%s;'
+    cursor.execute(sql, [user_id])
+    db.commit()
+    cursor.close()
+    db.close()
+
+
 def age_display(age):
     if age == '1':
         return 'Under 18'

@@ -26,4 +26,6 @@ urlpatterns = [
     path('change-profile-pic/', views.change_profile_pic, name='change-profile-pic'),
     path('change-profile-info/', views.change_profile_info, name='change-profile-info'),
     path('change-password/', views.change_password, name='change-password'),
+    path('search/', views.search, name='search'),
+    path('delete-browsing-history/', views.delete_browsing_history, name='delete-browsing-history'),
 ]

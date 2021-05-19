@@ -6,6 +6,7 @@ from . import models, utilities
 from django.core import paginator
 from django.db.models import Sum
 from . import recommendation as re
+from itertools import chain
 
 
 def index(request):
@@ -392,3 +393,34 @@ def change_password(request):
     request.session.flush()
     context = {'change_password_message': 'Successfully change password! Please login again!'}
     return render(request, 'index.html', context)
+
+
+def search(request):
+    context = {
+        'search_by_name_flag': False,
+        'search_by_id_flag': False,
+        'movies_search_by_name': None,
+        'movies_search_by_id': None,
+    }
+    search_text = request.POST.get('search')
+    movies_search_by_name = models.Movie.objects.all().filter(movie_title__icontains=search_text)
+    movies_search_by_id = models.Movie.objects.all().filter(movie_id=search_text)
+    if movies_search_by_name:
+        context['search_by_name_flag'] = True
+        context['movies_search_by_name'] = movies_search_by_name
+    if movies_search_by_id:
+        context['search_by_id_flag'] = True
+        context['movies_search_by_id'] = movies_search_by_id
+    return render(request, 'search.html', context)
+
+
+def delete_browsing_history(request):
+    try:
+        if not request.session['is_login']:
+            return render(request, 'notlogin.html')
+        else:
+            user_id = request.session['user_id']
+            utilities.delete_browsing_history(user_id)
+            return profile(request)
+    except:
+        return render(request, 'notlogin.html')

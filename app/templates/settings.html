@@ -81,8 +81,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				</div>
                 {% endif %}
 				<div class="search">
-					<form>
-						<input type="text" value="Search.." onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = 'Search..';}"/>
+										<form action="{% url 'search' %}" method="post">
+                        {% csrf_token %}
+						<input type="text" value="Search.." onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = 'Search..';}" name="search"/>
 						<input type="submit" value="">
 					</form>
 				</div>
@@ -412,6 +413,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <style>
 .copyrights{text-indent:-9999px;height:0;line-height:0;font-size:0;overflow:hidden;}
 </style>
-<div class="copyrights" id="links20210126">
+    <div class="copyrights" id="links20210126"></div>
 </body>
 </html>
