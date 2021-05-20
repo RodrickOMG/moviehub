@@ -140,15 +140,23 @@ def topmovies(request):
 
 def movie(request, movie_id):
     like_flag = False
+    rating_flag = False
+    user_rating = 0
     try:
         if not request.session['is_login']:
             pass
         else:
             user_id = request.session['user_id']
             like_model = models.Like.objects.all().filter(user_id_id=user_id, movie_id_id=movie_id).first()
+            rating_model = models.Rating.objects.all().filter(user_id_id=user_id, movie_id_id=movie_id).first()
             utilities.browser_history(user_id, movie_id)
             if like_model:
                 like_flag = True
+            else:
+                pass
+            if rating_model:
+                rating_flag = True
+                user_rating = rating_model.rating
             else:
                 pass
     except:
@@ -168,6 +176,13 @@ def movie(request, movie_id):
     rating_count = single_movie.rating_count
     recommended_movies_df = re.get_movie_recommendation(movie_id)
     recommended_movies = utilities.get_recommended_movies_info(recommended_movies_df)
+    movie_review_user_list = utilities.get_movie_review_user_list(movie_id)
+    for item in movie_review_user_list:
+        rating_single = item['rating']
+        star_num_tuple = utilities.get_star_num(rating_single)
+        item['star_num'] = star_num_tuple
+    if len(movie_review_user_list) > 20:
+        movie_review_user_list = movie_review_user_list[0:20]
     context = {
         'movie_id': movie_id,
         'movie_title': movie_title,
@@ -182,6 +197,9 @@ def movie(request, movie_id):
         'rating_count': rating_count,
         'recommended_movies': recommended_movies,
         'like': like_flag,
+        'movie_review_user_list': movie_review_user_list,
+        'rating_flag': rating_flag,
+        'user_rating': user_rating,
     }
     return render(request, 'single.html', context)
 
@@ -192,6 +210,9 @@ def profile(request):
             return render(request, 'notlogin.html')
         else:
             user_id = request.session['user_id']
+            if user_id < 610:
+                movie_recommend_list = re.get_user_movie_interact_score(user_id)
+
             rating_count = models.Rating.objects.all().filter(user_id_id=user_id).count()
             all_scores = models.Rating.objects.filter(user_id_id=user_id).aggregate(rating_score_sum=Sum('rating'))
             fav_movie_list = utilities.get_fav_movie_list(user_id)
@@ -216,6 +237,7 @@ def profile(request):
                 'fav_movie_list': fav_movie_list,
                 'rating_movie_list': rating_movie_list,
                 'history_movie_list': history_movie_list,
+                'movie_recommend_list': movie_recommend_list,
             }
             return render(request, 'profile.html', context)
     except:
@@ -422,5 +444,19 @@ def delete_browsing_history(request):
             user_id = request.session['user_id']
             utilities.delete_browsing_history(user_id)
             return profile(request)
+    except:
+        return render(request, 'notlogin.html')
+
+
+def star(request):
+    try:
+        if not request.session['is_login']:
+            return render(request, 'notlogin.html')
+        else:
+            user_id = request.session['user_id']
+            movie_id = request.GET.get('movie_id')
+            rating_score = request.GET.get('rating')
+            print(user_id, movie_id, rating_score)
+            return movie(request, movie_id)
     except:
         return render(request, 'notlogin.html')

@@ -16,6 +16,7 @@ class Movie(models.Model):
     rating = models.FloatField(null=True)
     rating_count = models.IntegerField(null=True, default=0)
     popularity = models.FloatField(null=True, default=0)
+    item_id = models.CharField(max_length=30, default=None)
 
 
 class User(models.Model):

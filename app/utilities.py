@@ -174,6 +174,38 @@ def delete_browsing_history(user_id):
     db.close()
 
 
+def get_movie_review_user_list(movie_id):
+    db = pymysql.connect(host="localhost", user="root", password="123456", database="moviehub", charset="utf8")
+    cursor = db.cursor()
+    sql = 'SELECT user_id_id, rating, timestamp FROM app_rating where movie_id_id="%s" ORDER by timestamp DESC ;' % movie_id
+    cursor.execute(sql)
+    movie_review_user_list = []
+    rating_results = cursor.fetchall()
+    for result in rating_results:
+        user_id = result[0]
+        rating = result[1]
+        timestamp = result[2]
+        user = models.User.objects.all().filter(id=user_id).first()
+        info = {
+            'rating': rating,
+            'user': user,
+            'timestamp': timestamp,
+        }
+        movie_review_user_list.append(info)
+    return movie_review_user_list
+
+
+def get_star_num(rating):
+    rating = int(rating)
+    light_star = ''
+    grey_star = ''
+    for i in range(0, rating):
+        light_star += '1'
+    for i in range(0, 5-rating):
+        grey_star += '1'
+    return light_star, grey_star
+
+
 def age_display(age):
     if age == '1':
         return 'Under 18'

@@ -28,4 +28,5 @@ urlpatterns = [
     path('change-password/', views.change_password, name='change-password'),
     path('search/', views.search, name='search'),
     path('delete-browsing-history/', views.delete_browsing_history, name='delete-browsing-history'),
+    url(r'^star/$', views.star),
 ]

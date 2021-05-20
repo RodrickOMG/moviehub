@@ -13,7 +13,16 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="keywords" content="Cinema Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template, 
 Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
-<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<script type="application/x-javascript">
+
+     $(document).ready(function() {
+       $('input[name=rating]').change(function(){
+            $('#star-form').submit();
+       });
+      });
+
+
+addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 <!--webfont-->
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 </head>
@@ -111,6 +120,71 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <img src="../../static/images/icons/edit-yellow.png" style="width: 50px;">
                         </a>
 
+                    {% if not rating_flag %}
+                        <form action="/moviehub/star/?&movieId={{ movie_id }}&rating={{ rating }}" id="star-form">
+                            <div class="star">
+                                <input type="radio" id="rate5" name="rating" value="5">
+                                <label for="rate5" title="Amazing"></label>
+
+                                <input type="radio" id="rate4" name="rating" value="4">
+                                <label for="rate4" title="Good"></label>
+
+                                <input type="radio" id="rate3" name="rating" value="3">
+                                <label for="rate3" title="Average"></label>
+
+                                <input type="radio" id="rate2" name="rating" value="2">
+                                <label for="rate2" title="Not good"></label>
+
+                                <input type="radio" id="rate1" name="rating" value="1">
+                                <label for="rate1" title="Terrible"></label>
+                                <input type="text" style="display: none" name="movie_id" value="{{ movie_id }}">
+                            </div>
+                        </form>
+                    {% else %}
+
+                        <form action="/moviehub/star/?&movieId={{ movie_id }}&rating={{ rating }}" id="star-form">
+                            <div class="star">
+                                {% if user_rating == 5 %}
+                                    <input type="radio" id="rate5" name="rating" value=5 checked="checked">
+                                {% else %}
+                                    <input type="radio" id="rate5" name="rating" value=5>
+                                {% endif %}
+                                <label for="rate5" title="Amazing"></label>
+
+                                {% if user_rating == 4 %}
+                                    <input type="radio" id="rate4" name="rating" value=4 checked="checked">
+                                {% else %}
+                                    <input type="radio" id="rate4" name="rating" value=4>
+                                {% endif %}
+                                <label for="rate4" title="Good"></label>
+
+                                {% if user_rating == 3 %}
+                                    <input type="radio" id="rate3" name="rating" value=3 checked="checked">
+                                {% else %}
+                                    <input type="radio" id="rate3" name="rating" value=3>
+                                {% endif %}
+                                <label for="rate3" title="Average"></label>
+
+                                {% if user_rating == 2 %}
+                                    <input type="radio" id="rate2" name="rating" value=2 checked="checked">
+                                {% else %}
+                                    <input type="radio" id="rate2" name="rating" value=2>
+                                {% endif %}
+                                <label for="rate2" title="Not good"></label>
+
+                                {% if user_rating == 1 %}
+                                    <input type="radio" id="rate1" name="rating" value=1 checked="checked">
+                                {% else %}
+                                    <input type="radio" id="rate1" name="rating" value=1>
+                                {% endif %}
+                                <label for="rate1" title="Terrible"></label>
+                                <input type="text" style="display: none" name="movie_id" value="{{ movie_id }}">
+                            </div>
+                        </form>
+
+                    {% endif %}
+
+
                     </div>
                     <h3>Overview</h3>
                     <p>{{summary}}</p>
@@ -125,8 +199,40 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             <div class="content2" style="display: inline-block; width: 90%">
                  <div class="single-review">
                     <h1>Reviews</h1>
-                    <div class="single-review-content"></div>
-                </div>
+                    <div class="single-review-content">
+                        {% if rating_count > 0 %}
+                            {% for user_rating in movie_review_user_list %}
+                                <div class="review-content">
+                                    <div class="single-review-left">
+                                        <img src="{{ user_rating.user.profile_pic }}">
+                                    </div>
+                                    <div class="single-review-right">
+                                        <h3>{{user_rating.user.username}}</h3>
+                                        <p>{{user_rating.timestamp}}</p>
+
+                                        <div class="review-star">
+                                            <div class="display-star" id="light">
+                                                {% for i in user_rating.star_num.0|make_list  %}
+                                                <label></label>
+                                                {% endfor %}
+                                            </div>
+                                            <div class="display-star">
+                                                {% for i in user_rating.star_num.1|make_list  %}
+                                                <label></label>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+
+
+                    </div><!-- /.single-review-content -->
+
+                </div><!-- /.single-review -->
                 <div class="single-recommend">
                     <h1>Recommendations</h1>
                     <div class="single-recommend-content">

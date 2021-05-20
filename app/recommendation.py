@@ -5,9 +5,83 @@ from sklearn.neighbors import NearestNeighbors
 import pymysql
 from . import models
 import os
+import torch
+from .NCF.neumf import NeuMF
+import random
+from random import randint
+
+os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
+
+gmf_config = {'alias': 'gmf_factor8neg4-implict',
+              'num_epoch': 200,
+              'batch_size': 1024,
+              # 'optimizer': 'sgd',
+              # 'sgd_lr': 1e-3,
+              # 'sgd_momentum': 0.9,
+              # 'optimizer': 'rmsprop',
+              # 'rmsprop_lr': 1e-3,
+              # 'rmsprop_alpha': 0.99,
+              # 'rmsprop_momentum': 0,
+              'optimizer': 'adam',
+              'adam_lr': 1e-3,
+              'num_users': 610,
+              'num_items': 9724,
+              'latent_dim': 8,
+              'num_negative': 4,
+              'l2_regularization': 0, # 0.01
+              'use_cuda': False,
+              'device_id': 0,
+              'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
+
+mlp_config = {'alias': 'mlp_factor8neg4_bz256_166432168_pretrain_reg_0.0000001',
+              'num_epoch': 200,
+              'batch_size': 256,  # 1024,
+              'optimizer': 'adam',
+              'adam_lr': 1e-3,
+              'num_users': 610,
+              'num_items': 9724,
+              'latent_dim': 8,
+              'num_negative': 4,
+              'layers': [16,64,32,16,8],  # layers[0] is the concat of latent user vector & latent item vector
+              'l2_regularization': 0.0000001,  # MLP model is sensitive to hyper params
+              'use_cuda': False,
+              'device_id': 0,
+              'pretrain': True,
+              'pretrain_mf': 'checkpoints/{}'.format('gmf_factor8neg4-implict_Epoch100_HR0.6967_NDCG0.4425.model'),
+              'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
+
+neumf_config = {'alias': 'pretrain_neumf_factor8neg4',
+                'num_epoch': 200,
+                'batch_size': 1024,
+                'optimizer': 'adam',
+                'adam_lr': 1e-3,
+                'num_users': 610,
+                'num_items': 9724,
+                'latent_dim_mf': 8,
+                'latent_dim_mlp': 8,
+                'num_negative': 4,
+                'layers': [16,64,32,16,8],  # layers[0] is the concat of latent user vector & latent item vector
+                'l2_regularization': 0.01,
+                'use_cuda': False,
+                'device_id': 0,
+                'pretrain': False,
+                'pretrain_mf': 'checkpoints/{}'.format('gmf_factor8neg4-implict_Epoch100_HR0.6967_NDCG0.4425.model'),
+                'pretrain_mlp': 'checkpoints/{}'.format('mlp_factor8neg4_bz256_166432168_pretrain_reg_0.0000001_Epoch100_HR0.6934_NDCG0.4570.model'),
+                'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'
+                }
+
+
+# 获取列表的第二个元素
+def takeSecond(elem):
+    return elem[1]
 
 
 def get_movie_recommendation(movie_id):
+    """
+
+    :param movie_id:
+    :return:
+    """
     movie_id = int(movie_id)
     ratings = pd.read_csv("/Users/rodrick/Documents/python/moviehub/app/data/ratings.csv")
     final_dataset = ratings.pivot(index='movieId', columns='userId', values='rating')
@@ -37,3 +111,45 @@ def get_movie_recommendation(movie_id):
         return df
     else:
         return "No movies found. Please check your input"
+
+
+def get_user_movie_interact_score(user_id):
+    """
+    :param user_id:
+    :param movie_id:
+    :return:
+    """
+    config = neumf_config
+    neumf_model = NeuMF(config)
+    if config['use_cuda'] is True:
+        neumf_model.cuda()
+    state_dict = torch.load("/Users/rodrick/Documents/python/moviehub/app/model/neumf.model", map_location=torch.device('cpu'))
+    neumf_model.load_state_dict(state_dict, strict=False)
+
+    # 读取用户在模型中对应的id
+    user_trans_csv = pd.read_csv("/Users/rodrick/Documents/python/moviehub/app/data/user_trans.csv")
+    for row in user_trans_csv.itertuples():
+        if user_id == getattr(row, 'uid'):
+            user_id_in_model = getattr(row, 'userId')
+
+    # 读取电影在模型中对应的id
+    movie_trans_csv = pd.read_csv("/Users/rodrick/Documents/python/moviehub/app/data/movie_trans.csv")
+
+    movie_itemId_list = random.sample(range(0, len(movie_trans_csv)), 500)
+
+    rating_list = []
+    for itemId in movie_itemId_list:
+        movie = models.Movie.objects.all().filter(item_id=itemId).first()
+        score = neumf_model.forward(torch.LongTensor([user_id_in_model]), torch.LongTensor([itemId])).data[0][0].item()
+        row = (movie.movie_id, score)
+        rating_list.append(row)
+
+    rating_list.sort(key=takeSecond)
+    rating_list.reverse()
+    movie_list = []
+
+    for i in range(0, 10):
+        movie_id = rating_list[i][0]
+        movie_list.append(models.Movie.objects.all().filter(movie_id=movie_id).first())
+
+    return movie_list
