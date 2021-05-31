@@ -2,6 +2,7 @@ import re
 import pymysql
 import time
 from . import models
+from django.db.models import Q
 
 
 def check_email(email):
@@ -16,14 +17,20 @@ def check_email(email):
         return False
 
 
-def create_user(username, password, email, gender, age, occupation):
+def create_user(username, password, email, gender, age, occupation, fav_genres):
     register_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
     db = pymysql.connect(host="localhost", user="root", password="123456", database="moviehub", charset="utf8")
+    if gender == 'F':
+        profile_pic = '../../static/images/user/default/girl-1.png'
+    elif gender == 'M':
+        profile_pic = '../../static/images/user/default/boy-1.png'
+    else:
+        profile_pic = '../../static/images/user/default/spiderman.png'
     cursor = db.cursor()
-    sql = "INSERT INTO app_user (username,age,gender,occupation,profile_pic,password,register_time,email) values" \
-          "  (%s,%s,%s,%s,%s,%s,%s,%s);"
+    sql = "INSERT INTO app_user (username,age,gender,occupation,profile_pic,password,register_time,email,fav_genres) values" \
+          "  (%s,%s,%s,%s,%s,%s,%s,%s,%s);"
     cursor.execute(sql,
-                   [username, age, gender, occupation, None, password, register_time, email])
+                   [username, age, gender, occupation, profile_pic, password, register_time, email, fav_genres])
     db.commit()
     cursor.close()
     db.close()
@@ -48,6 +55,7 @@ def get_recommended_movies_info(movie_df):
         poster_url = movie.poster_url
         json = {'movie_id': movie_id, 'movie_title': movie_title, 'poster_url': poster_url, 'distance': distance}
         recommended_movies_json.append(json)
+    recommended_movies_json.reverse()
     return recommended_movies_json
 
 
@@ -204,6 +212,79 @@ def get_star_num(rating):
     for i in range(0, 5-rating):
         grey_star += '1'
     return light_star, grey_star
+
+
+def combine_genres(genres_list):
+    genres_text = ''
+    for genres in genres_list:
+        genres_text += genres
+    return genres_text.rstrip('|')
+
+
+def split_genres(genres_text):
+    return str(genres_text).split('|')
+
+
+def get_user_recommend_movie_list_by_genres(genres_list):
+    q = Q(rating_count__gt=20)
+    for genres in genres_list:
+        q |= Q(genres__contains=genres)
+    movie_recommend_list = models.Movie.objects.all().order_by('-popularity').filter(q)
+    return movie_recommend_list[0:10]
+
+
+def rating_movie(user_id, movie_id, rating):
+    db = pymysql.connect(host="localhost", user="root", password="123456", database="moviehub", charset="utf8")
+    rating_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+    cursor = db.cursor()
+    sql = "INSERT INTO app_rating (user_id_id, movie_id_id, timestamp, rating) values" \
+          "  (%s,%s,%s,%s);"
+    cursor.execute(sql, [user_id, movie_id, rating_time, rating])
+    db.commit()
+    sql = 'SELECT * FROM app_rating where movie_id_id="%s";' % movie_id
+    cursor.execute(sql)
+    rating_results = cursor.fetchall()
+    rating_sum = 0
+    for rating in rating_results:
+        rating_sum += rating[1]
+    try:
+        rating_avg = round(rating_sum / len(rating_results), 1)
+    except:
+        rating_avg = 0
+    sql = 'UPDATE app_movie set rating=%s where movie_id=%s; '
+    cursor.execute(sql, [rating_avg, movie_id])
+    sql = 'UPDATE app_movie set rating_count=%s where movie_id=%s; '
+    cursor.execute(sql, [len(rating_results), movie_id])
+    db.commit()
+    cursor.close()
+    db.close()
+
+
+def change_rating_movie(user_id, movie_id, rating):
+    db = pymysql.connect(host="localhost", user="root", password="123456", database="moviehub", charset="utf8")
+    change_rating_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+    cursor = db.cursor()
+    sql = "UPDATE app_rating SET rating=%s, timestamp=%s WHERE user_id_id=%s and movie_id_id=%s;"
+    cursor.execute(sql, [rating, change_rating_time, user_id, movie_id])
+    db.commit()
+    sql = 'SELECT * FROM app_rating where movie_id_id="%s";' % movie_id
+    cursor.execute(sql)
+    rating_results = cursor.fetchall()
+    rating_sum = 0
+    for rating in rating_results:
+        rating_sum += rating[1]
+    try:
+        rating_avg = round(rating_sum / len(rating_results), 1)
+    except:
+        rating_avg = 0
+    sql = 'UPDATE app_movie set rating=%s where movie_id=%s; '
+    cursor.execute(sql, [rating_avg, movie_id])
+    sql = 'UPDATE app_movie set rating_count=%s where movie_id=%s; '
+    cursor.execute(sql, [len(rating_results), movie_id])
+    db.commit()
+    cursor.close()
+    db.close()
+
 
 
 def age_display(age):

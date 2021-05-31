@@ -28,6 +28,7 @@ class User(models.Model):
     password = models.CharField(max_length=30, null=True)
     email = models.CharField(max_length=100, unique=True, null=True)
     register_time = models.DateTimeField(default=timezone.now)
+    fav_genres = models.CharField(max_length=200, default='All')
 
 
 class Rating(models.Model):

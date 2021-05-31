@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.contrib.auth.hashers import make_password, check_password
 from . import models, utilities
@@ -76,9 +76,24 @@ def register(request):
             context['email_message'] = 'Email already exists.'
             return render(request, 'register.html', context)
         gender = request.POST.get('gender')
+        if not gender:
+            context['gender_message'] = 'You must choose your gender.'
+            return render(request, 'register.html', context)
         age = request.POST.get('age')
+        if not age:
+            context['age_message'] = 'You must choose your age.'
+            return render(request, 'register.html', context)
         occupation = request.POST.get('occupation')
-        utilities.create_user(username, password, email, gender, age, occupation)
+        if not occupation:
+            context['occupation_message'] = 'You must choose your occupation.'
+            return render(request, 'register.html', context)
+        fav_genres = request.POST.getlist('fav_genres')
+        if not fav_genres:
+            context['genres_message'] = 'You must choose at least one genres.'
+            return render(request, 'register.html', context)
+        fav_genres = utilities.combine_genres(fav_genres)
+        print(username, password, email, gender, age, occupation, fav_genres)
+        utilities.create_user(username, password, email, gender, age, occupation, fav_genres)
         context['message'] = 'Successfully Login'
         request.session['is_login'] = True
         user = models.User.objects.filter(username=username).first()
@@ -210,15 +225,22 @@ def profile(request):
             return render(request, 'notlogin.html')
         else:
             user_id = request.session['user_id']
+            user = models.User.objects.all().filter(id=user_id).first()
             if user_id < 610:
-                movie_recommend_list = re.get_user_movie_interact_score(user_id)
-
+                movie_recommend_list = re.get_user_recommend_movie_list_by_interact_score(user_id)
+            else:
+                if user.fav_genres == 'All':
+                    movie_recommend_list = models.Movie.objects.all().order_by('-popularity').filter(rating_count__gt=20)
+                    movie_recommend_list = movie_recommend_list[0:10]
+                else:
+                    genres = utilities.split_genres(user.fav_genres)
+                    movie_recommend_list = utilities.get_user_recommend_movie_list_by_genres(genres)
             rating_count = models.Rating.objects.all().filter(user_id_id=user_id).count()
             all_scores = models.Rating.objects.filter(user_id_id=user_id).aggregate(rating_score_sum=Sum('rating'))
             fav_movie_list = utilities.get_fav_movie_list(user_id)
             rating_movie_list = utilities.get_rating_movie_list(user_id)
             history_movie_list = utilities.get_browsing_history_movie_list(user_id)
-            user = models.User.objects.all().filter(id=user_id).first()
+
             if len(fav_movie_list) >= 20:
                 fav_movie_list = fav_movie_list[0:20]
             if len(history_movie_list) >= 20:
@@ -254,11 +276,9 @@ def like(request):
             like_model = models.Like.objects.all().filter(user_id_id=user_id, movie_id_id=movie_id).first()
             if not like_model:
                 utilities.like_movie(user_id, movie_id)
-            return movie(request, movie_id)
+            return HttpResponseRedirect('/moviehub/movie/'+movie_id)
     except:
         return render(request, 'notlogin.html')
-    # print(request.GET.get('movieId'))
-    # return movie(request, request.GET.get('movieId'))
 
 
 def dislike(request):
@@ -267,7 +287,7 @@ def dislike(request):
         like_model = models.Like.objects.all().filter(user_id_id=user_id, movie_id_id=movie_id).first()
         if like_model:
             utilities.dislike_movie(user_id, movie_id)
-        return movie(request, movie_id)
+        return HttpResponseRedirect('/moviehub/movie/'+movie_id)
 
 
 def favorite(request):
@@ -433,6 +453,7 @@ def search(request):
     if movies_search_by_id:
         context['search_by_id_flag'] = True
         context['movies_search_by_id'] = movies_search_by_id
+    context['search_text'] = search_text
     return render(request, 'search.html', context)
 
 
@@ -456,7 +477,13 @@ def star(request):
             user_id = request.session['user_id']
             movie_id = request.GET.get('movie_id')
             rating_score = request.GET.get('rating')
-            print(user_id, movie_id, rating_score)
-            return movie(request, movie_id)
+            change_rating_score = request.GET.get('change-rating')
+            if rating_score is not None:
+                print(user_id, movie_id, rating_score)
+                utilities.rating_movie(user_id, movie_id, rating_score)
+            else:
+                print(user_id, movie_id, change_rating_score)
+                utilities.change_rating_movie(user_id, movie_id, change_rating_score)
+            return HttpResponseRedirect('/moviehub/movie/'+movie_id)
     except:
         return render(request, 'notlogin.html')

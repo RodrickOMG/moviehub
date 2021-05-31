@@ -1888,7 +1888,7 @@ page
 	position: relative;
 }
 
-.favorite-list-single p {
+.favorite-list-single a {
 	font-size: 16px;
 	max-width: 100%;
 	white-space: nowrap;
@@ -2214,4 +2214,8 @@ input[type="radio"] {
 
 .single-review-right h3 {
 	padding-top: 0;
+}
+
+.register-checkbox label {
+	margin-left: 20px;
 }

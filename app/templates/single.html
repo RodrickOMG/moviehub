@@ -17,7 +17,27 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
      $(document).ready(function() {
        $('input[name=rating]').change(function(){
-            $('#star-form').submit();
+            var flag = confirm("Do you want to rate this movie?");
+            if (flag==true) {
+                    $('#star-form').submit();
+              }
+            else {
+                location.reload();
+            }
+
+       });
+      });
+
+     $(document).ready(function() {
+       $('input[name=change-rating]').change(function(){
+            var flag = confirm("Do you want to change the rating of this movie?");
+            if (flag==true) {
+                    $('#change-star-form').submit();
+              }
+            else {
+                location.reload();
+            }
+
        });
       });
 
@@ -142,40 +162,40 @@ addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); func
                         </form>
                     {% else %}
 
-                        <form action="/moviehub/star/?&movieId={{ movie_id }}&rating={{ rating }}" id="star-form">
+                        <form action="/moviehub/star/?&movieId={{ movie_id }}&rating={{ rating }}" id="change-star-form">
                             <div class="star">
                                 {% if user_rating == 5 %}
-                                    <input type="radio" id="rate5" name="rating" value=5 checked="checked">
+                                    <input type="radio" id="rate5" name="change-rating" value=5 checked="checked">
                                 {% else %}
-                                    <input type="radio" id="rate5" name="rating" value=5>
+                                    <input type="radio" id="rate5" name="change-rating" value=5>
                                 {% endif %}
                                 <label for="rate5" title="Amazing"></label>
 
                                 {% if user_rating == 4 %}
-                                    <input type="radio" id="rate4" name="rating" value=4 checked="checked">
+                                    <input type="radio" id="rate4" name="change-rating" value=4 checked="checked">
                                 {% else %}
-                                    <input type="radio" id="rate4" name="rating" value=4>
+                                    <input type="radio" id="rate4" name="change-rating" value=4>
                                 {% endif %}
                                 <label for="rate4" title="Good"></label>
 
                                 {% if user_rating == 3 %}
-                                    <input type="radio" id="rate3" name="rating" value=3 checked="checked">
+                                    <input type="radio" id="rate3" name="change-rating" value=3 checked="checked">
                                 {% else %}
-                                    <input type="radio" id="rate3" name="rating" value=3>
+                                    <input type="radio" id="rate3" name="change-rating" value=3>
                                 {% endif %}
                                 <label for="rate3" title="Average"></label>
 
                                 {% if user_rating == 2 %}
-                                    <input type="radio" id="rate2" name="rating" value=2 checked="checked">
+                                    <input type="radio" id="rate2" name="change-rating" value=2 checked="checked">
                                 {% else %}
-                                    <input type="radio" id="rate2" name="rating" value=2>
+                                    <input type="radio" id="rate2" name="change-rating" value=2>
                                 {% endif %}
                                 <label for="rate2" title="Not good"></label>
 
                                 {% if user_rating == 1 %}
-                                    <input type="radio" id="rate1" name="rating" value=1 checked="checked">
+                                    <input type="radio" id="rate1" name="change-rating" value=1 checked="checked">
                                 {% else %}
-                                    <input type="radio" id="rate1" name="rating" value=1>
+                                    <input type="radio" id="rate1" name="change-rating" value=1>
                                 {% endif %}
                                 <label for="rate1" title="Terrible"></label>
                                 <input type="text" style="display: none" name="movie_id" value="{{ movie_id }}">
@@ -198,7 +218,7 @@ addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); func
 
             <div class="content2" style="display: inline-block; width: 90%">
                  <div class="single-review">
-                    <h1>Reviews</h1>
+                    <h1>Recent Reviews</h1>
                     <div class="single-review-content">
                         {% if rating_count > 0 %}
                             {% for user_rating in movie_review_user_list %}

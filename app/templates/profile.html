@@ -200,7 +200,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             {% for recommend_movie in movie_recommend_list %}
                             <div class="favorite-list-single">
                                     <img src = "{{'https://www.themoviedb.org/t/p/w1280/'}}{{recommend_movie.poster_url}}" alt={{ recommend_movie.movie_title }} width="200px">
-                                <a href="/moviehub/movie/{{ recommend_movie.movie_id }}"><p>{{ recommend_movie.movie_title }}</p></a>
+                                <a href="/moviehub/movie/{{ recommend_movie.movie_id }}" ><p>{{ recommend_movie.movie_title }}</p></a>
                                 </div>
                             {% endfor %}
                         {% else %}

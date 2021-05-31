@@ -1,9 +1,9 @@
 import pandas as pd
 import numpy as np
-from gmf import GMFEngine
-from mlp import MLPEngine
-from neumf import NeuMFEngine, NeuMF
-from data import SampleGenerator
+from .gmf import GMFEngine
+from .mlp import MLPEngine
+from .neumf import NeuMFEngine, NeuMF
+from .data import SampleGenerator
 import os
 import torch
 
@@ -102,7 +102,6 @@ def train():
 
 
 if __name__ == "__main__":
-
     ml1m_rating = pd.read_csv("data/ml-1m-small/ratings.csv")
     user_id = ml1m_rating[['uid']].drop_duplicates().reindex()
     user_id['userId'] = np.arange(len(user_id))

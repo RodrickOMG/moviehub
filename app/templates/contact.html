@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
 <title>Contact</title>
 <link rel="icon" href="../../static/images/logo-icon.png" type="image/x-icon"/>
@@ -11,11 +11,36 @@
 <!-- Custom Theme files -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="keywords" content="Cinema Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template, 
+<meta name="keywords" content="Cinema Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template,
 Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 <!--webfont-->
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <style>
+    #allmap {
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        font-family: "微软雅黑";
+    }
+    .info {
+        z-index: 999;
+        width: auto;
+        min-width: 22rem;
+        padding: .75rem 1.25rem;
+        margin-left: 1.25rem;
+        position: fixed;
+        top: 1rem;
+        background-color: #fff;
+        border-radius: .25rem;
+        font-size: 14px;
+        color: #666;
+        box-shadow: 0 2px 6px 0 rgba(27, 142, 236, 0.5);
+    }
+    </style>
+    <script src="//bj.bcebos.com/v1/mapopen/api-demos/js/mapStyle.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=gbPsQ4UFHYsF9Rw522uWn0c8rVBWPAKe"></script>
 </head>
 <body>
 	<!-- header-section-starts -->
@@ -102,10 +127,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			 </form>
 	     </div>
 		 <div class="contact_info">
-			 <h3>Find Us Here</h3>
-			 <div class="map">
-				<iframe width="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.co.in/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=Lighthouse+Point,+FL,+United+States&amp;aq=4&amp;oq=light&amp;sll=26.275636,-80.087265&amp;sspn=0.04941,0.104628&amp;ie=UTF8&amp;hq=&amp;hnear=Lighthouse+Point,+Broward,+Florida,+United+States&amp;t=m&amp;z=14&amp;ll=26.275636,-80.087265&amp;output=embed"></iframe><br><small><a href="https://maps.google.co.in/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q=Lighthouse+Point,+FL,+United+States&amp;aq=4&amp;oq=light&amp;sll=26.275636,-80.087265&amp;sspn=0.04941,0.104628&amp;ie=UTF8&amp;hq=&amp;hnear=Lighthouse+Point,+Broward,+Florida,+United+States&amp;t=m&amp;z=14&amp;ll=26.275636,-80.087265" style="color:#000;text-align:left;font-size:12px">View Larger Map</a></small>
-			</div>
+			 <h3 style="padding-left: 0">Find Us Here</h3>
+			 <div id="allmap" style="width: 600px;height: 400px;overflow: hidden;margin:0;font-family:'微软雅黑';">
+
+             </div>
 	 </div>
 </div>
 <div class="footer">
@@ -125,3 +150,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <div class="copyrights" id="links20210126">
 </body>
 </html>
+<script type="text/javascript">
+    // 百度地图API功能
+    var map = new BMap.Map("allmap");    // 创建Map实例
+    map.centerAndZoom(new BMap.Point(106.474, 29.569), 18);  // 初始化地图,设置中心点坐标和地图级别
+    map.addControl(new BMap.MapTypeControl());   //添加地图类型控件
+    map.setCurrentCity("重庆");          // 设置地图显示的城市 此项是必须设置的
+</script>

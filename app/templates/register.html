@@ -65,7 +65,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 
 				<div class="login">
-					<a href="{% url 'login' %}">Log in</a><span>|</span><a href="{% url 'register' %}">Sign up</a>
+					<a href="{% url 'login' %}">Log in</a><span>&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="{% url 'register' %}">Sign up</a>
 				</div>
 				<div class="search">
 										<form action="{% url 'search' %}" method="post">
@@ -153,6 +153,33 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                   <option value =19>unemployed</option>
                   <option value =20>writer</option>
                 </select>
+              <p id="register">Favorite Genres (Please hold ctrl to multiple select at least one genres)</p>
+              <select id="fav_genres" name="fav_genres" style="margin-left: 2em;margin-bottom: 1em;width: 30%;padding: 3px 0" multiple="multiple">
+            　　　　 <option value ='Adventure|' style="padding-left: 10px">Adventure</option>
+                    <option value ='Animation|' style="padding-left: 10px">Animation</option>
+                    <option value ='Children|' style="padding-left: 10px">Children</option>
+                    <option value ='Comedy|' style="padding-left: 10px">Comedy</option>
+                    <option value ='Fantasy|' style="padding-left: 10px">Fantasy</option>
+                    <option value ='Romance|' style="padding-left: 10px">Romance</option>
+                    <option value ='Drama|' style="padding-left: 10px">Drama</option>
+                    <option value ='Action|' style="padding-left: 10px">Action</option>
+                    <option value ='Crime|' style="padding-left: 10px">Crime</option>
+                    <option value ='Thriller|' style="padding-left: 10px">Thriller</option>
+                    <option value ='Horror|' style="padding-left: 10px">Horror</option>
+                    <option value ='Mystery|' style="padding-left: 10px">Mystery</option>
+                    <option value ='Sci-Fi|' style="padding-left: 10px">Sci-Fi</option>
+                    <option value ='War|' style="padding-left: 10px">War</option>
+                    <option value ='Musical|' style="padding-left: 10px">Musical</option>
+                    <option value ='Documentary|' style="padding-left: 10px">Documentary</option>
+                    <option value ='IMAX|' style="padding-left: 10px">IMAX</option>
+                    <option value ='Western|' style="padding-left: 10px">Western</option>
+                    <option value ='Film-Noir|' style="padding-left: 10px">Film-Noir</option>
+              </select>
+              <div style="color: red;display: inline;margin-left: 20px" name="message">
+                      {% if genres_message %}
+                        {{ genres_message }}
+                      {% endif %}
+                  </div>
               <div class="register-button">
                    <button>Sign Up</button>
               </div>

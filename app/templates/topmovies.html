@@ -240,7 +240,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <div class="overlay"></div>
                               <img src = "{{'https://www.themoviedb.org/t/p/w1280/'}}{{each.poster_url}}" alt="">
                               <div class="image-details">
-                                  cc<p style="font-weight: bold">{{ each.movie_title }}</p></a>
+                                  <a href="/moviehub/movie/{{each.movie_id}}" style="color: white"><p style="font-weight: bold">{{ each.movie_title }}</p></a>
                               </div>
                             <div class="rating-overlay"><canvas class="loader{{ each.movie_id }}" style="margin-left: -35%; margin-top: 75%;"></canvas></div>
                         </div>
